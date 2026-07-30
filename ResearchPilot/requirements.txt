@@ -1,0 +1,58 @@
+# ResearchPilot — planned dependencies (foundation)
+# Do NOT treat this as an installed environment.
+# Pin versions in later phases when environments are created.
+
+# --- DA1: Data collection, processing, and EDA ---
+pandas
+numpy
+scipy
+statsmodels
+pymupdf
+pyarrow
+openpyxl
+jupyter
+notebook
+matplotlib
+seaborn
+plotly
+
+# --- DA2: Database integration ---
+sqlalchemy
+psycopg
+
+# --- DA2: ML / DL and model comparison ---
+scikit-learn
+xgboost
+lightgbm
+imbalanced-learn
+torch
+
+# --- DA3: LLM / Fine-tuning ---
+transformers
+datasets
+accelerate
+peft
+trl
+unsloth
+
+# --- DA3: Embeddings / RAG ---
+sentence-transformers
+chromadb
+langchain
+langgraph
+
+# --- DA3: Backend and dashboard ---
+fastapi
+uvicorn
+streamlit
+
+# --- Cross-phase evaluation ---
+bert-score
+evaluate
+
+# --- Config / utilities (planned) ---
+pyyaml
+python-dotenv
+pydantic
+tqdm
+rich

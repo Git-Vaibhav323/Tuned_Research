@@ -1,0 +1,180 @@
+# =============================================================================
+# ResearchPilot — .gitignore (Python + AI / ML research projects)
+# =============================================================================
+
+# --- Bytecode / caches ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+*.so
+
+# --- Virtual environments ---
+.venv/
+venv/
+env/
+ENV/
+.env/
+.conda/
+*.egg-info/
+.eggs/
+dist/
+build/
+develop-eggs/
+downloads/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+
+# --- Packaging ---
+*.egg
+MANIFEST
+*.manifest
+*.spec
+
+# --- Testing / coverage ---
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+.hypothesis/
+.cache/
+
+# --- Type checkers / linters ---
+.mypy_cache/
+.ruff_cache/
+.pytype/
+.pyre/
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+
+# --- Environment / secrets ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+credentials.json
+**/secrets.yaml
+
+# --- IDE / editors ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.settings/
+.spyderproject
+.spyproject
+
+# --- OS junk ---
+.DS_Store
+.DS_Store?
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# --- Logs ---
+logs/
+*.log
+*.out
+
+# --- Model weights & large artifacts (keep directory structure via .gitkeep) ---
+models/checkpoints/**
+!models/checkpoints/.gitkeep
+models/adapters/**
+!models/adapters/.gitkeep
+models/exports/**
+!models/exports/.gitkeep
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+*.gguf
+*.ggml
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.joblib
+
+# --- Data (large / proprietary; keep folders) ---
+data/raw_papers/**
+!data/raw_papers/.gitkeep
+data/external/**
+!data/external/.gitkeep
+data/interim/**
+!data/interim/.gitkeep
+data/processed/**
+!data/processed/.gitkeep
+data/instruction_dataset/**
+!data/instruction_dataset/.gitkeep
+# Allow small tracked samples later via explicit git add -f if needed
+# Benchmarks may be committed when small and license-cleared:
+# data/benchmark/ is NOT fully ignored by default
+
+# --- Local databases ---
+*.db
+*.sqlite
+*.sqlite3
+database/local/
+
+# --- Vector DB / local indexes ---
+**/chroma*/
+**/.chroma/
+**/faiss_index*/
+**/vector_store*/
+**/index_store/
+
+# --- Hugging Face / cache ---
+.cache/huggingface/
+.cache/torch/
+**/huggingface/
+transformers_cache/
+HF_HOME/
+~/.cache/
+
+# --- Experiment tracking ---
+wandb/
+mlruns/
+lightning_logs/
+runs/
+outputs/
+artifacts/
+
+# --- Evaluation large outputs (keep reports folder) ---
+evaluation/reports/**
+!evaluation/reports/.gitkeep
+!evaluation/reports/**/.gitkeep
+
+# --- Frontend build (future) ---
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.next/
+frontend/out/
+
+# --- Temporary / misc ---
+tmp/
+temp/
+*.tmp
+*.bak
+*.orig
+.turbo/
