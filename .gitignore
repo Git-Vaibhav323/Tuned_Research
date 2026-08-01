@@ -116,14 +116,20 @@ models/exports/**
 *.joblib
 
 # --- Data (large / proprietary; keep folders) ---
+data/raw/**
+!data/raw/.gitkeep
 data/raw_papers/**
 !data/raw_papers/.gitkeep
 data/external/**
 !data/external/.gitkeep
 data/interim/**
 !data/interim/.gitkeep
+data/cleaned/**
+!data/cleaned/.gitkeep
 data/processed/**
 !data/processed/.gitkeep
+data/final/**
+!data/final/.gitkeep
 data/instruction_dataset/**
 !data/instruction_dataset/.gitkeep
 # Allow small tracked samples later via explicit git add -f if needed

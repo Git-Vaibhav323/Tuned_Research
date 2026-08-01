@@ -1,10 +1,8 @@
 # Changelog
 
-All notable changes to **ResearchPilot** will be documented in this file.
+All notable changes to **ResearchPilot** are documented here.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
-once tagged releases begin.
+Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
@@ -12,44 +10,29 @@ once tagged releases begin.
 
 ### Planned
 
-- DA1: dataset documentation, cleaning, preprocessing, EDA, and R visualizations
-- DA2: database integration, feature engineering, ML/DL comparison, and metrics
-- DA3: AI research assistant, LLM integration, dashboard, and final evaluation
-
-### Changed
-
-- Reframed the architecture as a complete data science workflow rather than an LLM-first repository
-- Added `src/researchpilot/` packages for data, features, models, visualization, and assistant layers
-- Added `database/`, `r/`, `reports/`, `data/external/`, and `data/interim/`
-- Updated architecture, scope, dataset, benchmark, roadmap, dependencies, and contribution guidance for DA1/DA2/DA3
+- Phase 1: dataset collection, preprocessing, EDA, documentation  
+- Phase 2: machine learning and comparative analysis  
+- Phase 3: fine-tuning, RAG, dashboard  
 
 ---
 
-## [0.1.0-foundation] — 2026-07-30
+## [0.1.0-foundation] — 2026-08-01
 
 ### Added
 
-- Initial professional repository structure for ResearchPilot
-- Data, notebooks, backend, frontend, models, evaluation, scripts, docs, tests, and configs directories
-- Placeholder Python packages with `__init__.py` under backend, evaluation, scripts, and tests
-- Comprehensive `README.md` (overview, problem, objectives, features, architecture, stack, roadmap)
-- Documentation set:
-  - `docs/architecture.md`
-  - `docs/project_architecture.md`
-  - `docs/dataset_plan.md`
-  - `docs/development_roadmap.md`
-  - `docs/project_scope.md`
-  - `docs/benchmark_plan.md`
-- `requirements.txt` with planned dependencies (not installed)
-- `.gitignore` tailored for Python AI/ML projects
-- `LICENSE` (MIT)
-- `CONTRIBUTING.md`
-- `CHANGELOG.md`
+- Three-phase repository scaffold at workspace root  
+- Folders for data, notebooks, scripts, configs, src, models, evaluation, backend, frontend, docs, tests  
+- Phase-aligned configs under `configs/phase1|phase2|phase3/`  
+- Script scaffolds under `scripts/phase1|phase2|phase3/`  
+- Notebook scaffolds under `notebooks/phase1_eda|phase2_ml|phase3_llm/`  
+- Documentation set for architecture, dataset plan, roadmap, scope, benchmarks  
+- `requirements.txt` with planned Phase 1–3 dependencies  
+- MIT license, contributing guide, changelog, gitignore  
 
 ### Notes
 
-- The foundation release contains **documentation and organization only**
-- No APIs, UI, ML pipelines, datasets, or vector database code in this release marker
+- Foundation contains structure and documentation only  
+- No real datasets, trained models, RAG indexes, or running dashboard  
 
 ---
 

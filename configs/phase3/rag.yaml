@@ -1,0 +1,21 @@
+# Phase 3 — RAG settings (placeholder)
+
+project: ResearchPilot
+phase: 3
+
+paths:
+  processed: data/processed
+  vector_store: data/interim/vector_store   # local only; gitignored
+
+chunking:
+  strategy: fixed
+  chunk_size: 512
+  chunk_overlap: 64
+
+embeddings:
+  model_name: sentence-transformers/all-MiniLM-L6-v2
+  batch_size: 32
+
+retrieval:
+  top_k: 5
+  store: chromadb

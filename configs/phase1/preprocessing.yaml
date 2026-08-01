@@ -1,0 +1,27 @@
+# Phase 1 — Cleaning and preprocessing settings (placeholder)
+
+project: ResearchPilot
+phase: 1
+
+paths:
+  interim: data/interim
+  processed: data/processed
+  metadata: data/metadata
+
+cleaning:
+  drop_duplicates: true
+  strip_whitespace: true
+  handle_missing: drop_or_impute   # document choice in notebooks
+  text_normalize: true
+
+preprocessing:
+  lowercase_text: false
+  remove_html: true
+  min_abstract_chars: 50
+
+split:
+  # Reserved for Phase 2; document candidate strategy in Phase 1
+  train_ratio: 0.8
+  val_ratio: 0.1
+  test_ratio: 0.1
+  random_state: 42

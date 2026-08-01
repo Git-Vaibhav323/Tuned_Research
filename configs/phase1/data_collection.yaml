@@ -1,0 +1,22 @@
+# Phase 1 — Dataset collection settings (placeholder)
+# Fill source URLs and paths when Phase 1 implementation begins.
+
+project: ResearchPilot
+phase: 1
+
+paths:
+  raw: data/raw
+  raw_papers: data/raw_papers
+  external: data/external
+  interim: data/interim
+  processed: data/processed
+  metadata: data/metadata
+
+collection:
+  sources: []          # e.g. OpenAlex, arXiv metadata, local CSVs
+  language: en
+  max_records: null    # set an integer limit for prototypes
+
+output:
+  dataset_name: researchpilot_v1
+  format: parquet      # parquet | csv | jsonl

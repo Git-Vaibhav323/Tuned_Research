@@ -1,156 +1,127 @@
-# ResearchPilot — DA1/DA2/DA3 Development Roadmap
+# ResearchPilot — Development Roadmap
 
-**Course:** Programming for Data Science  
-**Status:** Foundation complete; implementation deferred
+**Status:** Foundation scaffold complete  
+**Delivery model:** Three cumulative phases
 
-## 1. Delivery Strategy
+---
 
-ResearchPilot is developed as one cumulative data science project. Each assessment phase has a complete, demonstrable outcome and creates stable inputs for the next phase.
+## Overview
 
 ```text
-DA1: trustworthy data and analysis
-  ↓
-DA2: database-backed features and evaluated predictive models
-  ↓
-DA3: AI assistant, dashboard, and end-to-end evaluation
+Phase 1: Dataset Collection → Preprocessing → EDA → Documentation
+Phase 2: Machine Learning → Comparative Analysis
+Phase 3: Fine-tuning → RAG → Dashboard
 ```
 
-The LLM is a DA3 integration component, not the foundation of the repository.
+Each phase produces assessable artifacts used by the next phase.
 
-## 2. Foundation — Repository and Architecture
+---
 
-### Deliverables
+## Foundation (complete)
 
-- [x] Professional repository structure
-- [x] Documentation, scope, and contribution guidance
-- [x] Data, database, reusable source, R, modeling, reporting, and app boundaries
-- [x] Planned dependencies only
-- [x] No premature API, UI, ML, or LLM implementation
+- [x] Repository layout  
+- [x] README and docs  
+- [x] Phase configs, scripts, notebook folders  
+- [x] Planned `requirements.txt`  
+- [x] No premature ML/RAG/dashboard implementation  
 
-### Exit criterion
+---
 
-The repository can accept DA1 artifacts without structural redesign.
+## Phase 1 — Dataset, EDA, Preprocessing, Documentation
 
-## 3. DA1 — Dataset and Exploratory Analysis
+### Goals
 
-### Objectives
+- Collect a licensed, research-relevant dataset  
+- Document provenance, schema, and data dictionary  
+- Clean and preprocess into `data/processed/`  
+- Perform exploratory data analysis  
+- Publish figures, tables, and findings  
 
-- Collect a relevant research dataset from legal, documented sources
-- Create a data dictionary and provenance/license record
-- Assess missing values, duplicates, outliers, consistency, and bias
-- Clean and preprocess data through reproducible Python workflows
-- Perform univariate, bivariate, and multivariate EDA
-- Produce meaningful visualizations in Python and R
-- Interpret findings in the context of the research problem
+### Locations
 
-### Repository outputs
-
-| Output | Location |
-|--------|----------|
-| Source data pointers / allowed raw files | `data/raw_papers/`, `data/external/` |
-| Provenance and data dictionary | `data/metadata/`, `docs/dataset_plan.md` |
-| Intermediate and clean datasets | `data/interim/`, `data/processed/` |
-| Reusable data code | `src/researchpilot/data/` |
-| EDA notebooks | `notebooks/` |
-| R scripts and plots | `r/scripts/`, `r/visualizations/` |
-| Figures and summary tables | `reports/figures/`, `reports/tables/` |
+| Work | Path |
+|------|------|
+| Raw / external data | `data/raw/`, `data/external/`, `data/raw_papers/` |
+| Processed data | `data/processed/` |
+| Metadata | `data/metadata/` |
+| Scripts | `scripts/phase1/` |
+| Configs | `configs/phase1/` |
+| Notebooks | `notebooks/phase1_eda/` |
+| Code | `src/researchpilot/data/`, `visualization/` |
+| Reports | `reports/` |
 
 ### Exit criteria
 
-- [ ] Data source and license documented
-- [ ] Data dictionary completed
-- [ ] Cleaning decisions justified and reproducible
-- [ ] Processed dataset validated
-- [ ] EDA answers defined research questions
-- [ ] R visualizations included and interpreted
-- [ ] DA1 findings documented
+- [ ] Sources and licenses documented  
+- [ ] Data dictionary complete  
+- [ ] Cleaning decisions reproducible  
+- [ ] EDA notebooks interpreted  
+- [ ] Processed dataset validated  
+- [ ] Phase 2 modeling target proposed  
 
-## 4. DA2 — Database, Features, and ML/DL
+---
 
-### Objectives
+## Phase 2 — Machine Learning and Comparative Analysis
 
-- Design and integrate an appropriate database
-- Load validated DA1 data and demonstrate meaningful SQL queries
-- Engineer reproducible features without leakage
-- Define a prediction, classification, clustering, or ranking task supported by the data
-- Implement a baseline and multiple suitable ML/DL algorithms
-- Evaluate all candidate models under a consistent protocol
-- Compare performance, complexity, interpretability, and limitations
+### Goals
 
-### Repository outputs
+- Engineer features without leakage  
+- Train a baseline and multiple ML/DL models  
+- Evaluate with task-appropriate metrics  
+- Compare models with tables and visualizations  
+- Select and justify a best model  
 
-| Output | Location |
-|--------|----------|
-| Schema and migration assets | `database/schemas/`, `database/migrations/` |
-| Analytical SQL | `database/queries/` |
-| Feature pipelines | `src/researchpilot/features/` |
-| ML/DL workflows | `src/researchpilot/models/` |
-| Experiment configs | `configs/` |
-| Metrics and evaluation | `evaluation/metrics/` |
-| Comparative figures/tables | `reports/figures/`, `reports/tables/` |
-| Model artifacts | `models/` |
+### Locations
 
-### Candidate comparisons
-
-At minimum, compare a simple baseline with several task-appropriate families, such as linear models, tree ensembles, gradient boosting, and a compact neural model. Final choices must follow the dataset and target; unsuitable algorithms should not be added solely to inflate model count.
+| Work | Path |
+|------|------|
+| Features | `src/researchpilot/features/` |
+| Models | `src/researchpilot/models/` |
+| Scripts | `scripts/phase2/` |
+| Configs | `configs/phase2/` |
+| Notebooks | `notebooks/phase2_ml/` |
+| Artifacts | `models/` |
+| Evaluation | `evaluation/`, `reports/` |
 
 ### Exit criteria
 
-- [ ] Database schema and ingestion documented
-- [ ] SQL queries demonstrate integration
-- [ ] Features are reproducible and leakage-safe
-- [ ] Baseline plus multiple ML/DL algorithms evaluated
-- [ ] Metrics match the task and class/data characteristics
-- [ ] Comparative visualizations and error analysis completed
-- [ ] Selected model justified
+- [ ] Baseline + multiple algorithms trained  
+- [ ] Fair split and metrics documented  
+- [ ] Comparative analysis completed  
+- [ ] Selected model justified  
 
-## 5. DA3 — AI Research Assistant and Dashboard
+---
 
-### Objectives
+## Phase 3 — Fine-tuning, RAG, Dashboard
 
-- Integrate an LLM without discarding DA1/DA2 artifacts
-- Implement the four final assistant modules
-- Add optional retrieval and source attribution
-- Build an interactive dashboard
-- Surface DA1 insights and DA2 model comparisons interactively
-- Conduct final technical and user-centered evaluation
+### Goals
 
-### Final modules
+- Prepare instruction / retrieval corpora from Phase 1 data  
+- Fine-tune (or PEFT) a language model for research modules  
+- Build a RAG pipeline (chunk → embed → retrieve → generate)  
+- Ship an interactive dashboard exposing assistant + analytics  
+- Run final evaluation  
 
-1. Adaptive Research Translator
-2. Statistical Advisor
-3. Abstract Improver
-4. Research Gap Finder
+### Locations
 
-### Repository outputs
-
-| Output | Location |
-|--------|----------|
-| Assistant orchestration | `src/researchpilot/assistant/` |
-| API/service layer | `backend/` |
-| Dashboard | `frontend/` |
-| LLM artifacts/configs | `models/`, `configs/` |
-| Final benchmarks | `data/benchmark/`, `evaluation/` |
-| Final visualizations and report assets | `reports/` |
+| Work | Path |
+|------|------|
+| Fine-tune / RAG code | `src/researchpilot/assistant/`, `rag/` |
+| Scripts | `scripts/phase3/` |
+| Configs | `configs/phase3/` |
+| Notebooks | `notebooks/phase3_llm/` |
+| API / UI | `backend/`, `frontend/` |
+| Benchmarks | `data/benchmark/`, `evaluation/` |
 
 ### Exit criteria
 
-- [ ] Assistant modules work through documented interfaces
-- [ ] Sources and uncertainty are presented where applicable
-- [ ] Dashboard exposes data, model, and assistant views
-- [ ] Interactive visualizations support user exploration
-- [ ] DA2 model and DA3 assistant are evaluated separately
-- [ ] End-to-end limitations and ethical considerations documented
+- [ ] Fine-tuned or adapter-based model available  
+- [ ] RAG returns grounded passages  
+- [ ] Four research modules exposed in dashboard  
+- [ ] Final evaluation and limitations documented  
 
-## 6. Cross-Phase Quality Gates
+---
 
-- Raw data remains immutable.
-- Every derived artifact is traceable to inputs and configuration.
-- Training and test data remain separated.
-- Database, ML, and LLM evaluation results are not conflated.
-- No private papers, credentials, or large generated artifacts are committed.
-- Documentation is updated with every assessed deliverable.
+## Immediate Next Step
 
-## 7. Immediate Next Step
-
-Begin DA1 by finalizing the dataset choice, research questions, data dictionary template, collection policy, and EDA plan before writing processing code.
+Start **Phase 1**: finalize dataset choice, write the data dictionary template, and begin collection into `data/raw/` / `data/external/`.

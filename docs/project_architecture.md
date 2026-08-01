@@ -1,326 +1,126 @@
-# ResearchPilot — Detailed Project Architecture
+# ResearchPilot — Project Architecture Diagrams
 
-**Document type:** Architecture diagrams & end-to-end flows  
-**Phase:** 1 — Foundation  
-**Status:** Planning artifact (no code implementation)
-
-This document expands [architecture.md](architecture.md) with Markdown diagrams suitable for onboarding and design reviews.
+**Status:** Planning artifact
 
 ---
 
-## 1. Course-Phase Evolution
+## 1. Phase Evolution
 
 ```text
-DA1 — DATA SCIENCE FOUNDATION
+Phase 1 — DATA SCIENCE FOUNDATION
 Research Sources
   ↓
-Collection + Dataset Documentation
+Dataset Collection + Documentation
   ↓
-Raw Data → Cleaning → Preprocessing → Processed Data
+Cleaning → Preprocessing → Processed Data
   ↓
-Exploratory Data Analysis
+Exploratory Data Analysis + Visualizations
   ↓
-Python Visualizations + R Visualizations
-  ↓
-DA1 Dataset, Figures, and Findings
+Phase 1 Findings and Data Dictionary
 
-                  ↓ reusable validated data
-
-DA2 — DATABASE AND MODELING
-Database Schema + Ingestion + SQL Analysis
-  ↓
+Phase 2 — MACHINE LEARNING
 Feature Engineering
   ↓
-Baseline + Multiple ML/DL Algorithms
+Baseline + Multiple Algorithms
   ↓
-Evaluation Metrics + Error Analysis
+Evaluation Metrics
   ↓
-Model Comparison + Comparative Visualizations
-  ↓
-DA2 Selected Model and Report
+Comparative Analysis + Selected Model
 
-                  ↓ evaluated models and analytical assets
-
-DA3 — RESEARCH INTELLIGENCE APPLICATION
-LLM + Optional Retrieval + DA2 Model Services
+Phase 3 — AI APPLICATION
+Fine-tuning + RAG Index
   ↓
-AI Research Assistant Modules
+Research Assistant Modules
   ↓
-Dashboard + Interactive Visualizations
+Interactive Dashboard
   ↓
-Final Technical and User-Centered Evaluation
+Final Evaluation
 ```
 
-## 2. DA3 End-to-End User Flow
+---
+
+## 2. Phase 3 End-to-End User Flow
 
 ```text
 User
-  │
-  ▼
+  ↓
 Upload PDF / Ask Question
-  │
-  ▼
+  ↓
 Document Processing
-  │  (PDF parse · text clean · section detect)
-  ▼
+  ↓
 Chunking
-  │  (semantic / fixed-size chunks · metadata attach)
-  ▼
+  ↓
 Retrieval Layer
-  │  (embed query · similarity search · rerank optional)
-  ▼
+  ↓
 Fine-Tuned Language Model
-  │  (module-specific system prompt · context window packing)
-  ▼
+  ↓
 Response Generator
-  │  (format · cite · calibrate confidence)
-  ▼
+  ↓
 Answer + Sources + Confidence
 ```
 
 ---
 
-## 3. DA3 Request Lifecycle (Sequence)
+## 3. Component Map
 
 ```text
-┌──────┐   ┌────────┐   ┌─────────────┐   ┌──────────┐   ┌─────┐   ┌──────────┐
-│ User │   │   UI   │   │  FastAPI    │   │Orchestr. │   │ RAG │   │   LLM    │
-└──┬───┘   └───┬────┘   └──────┬──────┘   └────┬─────┘   └──┬──┘   └────┬─────┘
-   │  submit   │               │               │            │           │
-   │──────────►│  HTTP JSON    │               │            │           │
-   │           │──────────────►│  route module │            │           │
-   │           │               │──────────────►│  retrieve  │           │
-   │           │               │               │───────────►│           │
-   │           │               │               │◄───────────│ contexts  │
-   │           │               │               │  generate  │           │
-   │           │               │               │───────────────────────►│
-   │           │               │               │◄───────────────────────│
-   │           │               │◄──────────────│  structured reply      │
-   │           │◄──────────────│               │            │           │
-   │◄──────────│  answer+src   │               │            │           │
+Phase 1: data/ + src/.../data/ + notebooks/phase1_eda/ + scripts/phase1/
+Phase 2: features/ + models/ + notebooks/phase2_ml/ + scripts/phase2/
+Phase 3: rag/ + assistant/ + backend/ + frontend/ + notebooks/phase3_llm/
+Shared:  configs/ + evaluation/ + reports/ + models/ + docs/
 ```
 
 ---
 
-## 4. Full Component Diagram
+## 4. RAG Pipeline (Phase 3)
 
 ```text
-┌───────────────────────────────────────────────────────────────┐
-│ DA1: data/ + src/researchpilot/data/ + notebooks/ + r/         │
-│ Collection · cleaning · preprocessing · EDA · visualization    │
-└───────────────────────────┬───────────────────────────────────┘
-                            ▼
-┌───────────────────────────────────────────────────────────────┐
-│ DA2: database/ + features/ + models/ + evaluation/ + reports/  │
-│ SQL · feature pipelines · ML/DL · metrics · comparisons        │
-└───────────────────────────┬───────────────────────────────────┘
-                            ▼
-┌───────────────────────────────────────────────────────────────┐
-│ DA3: assistant/ + backend/ + frontend/                         │
-│ LLM/retrieval · research modules · dashboard · interaction     │
-└───────────────────────────┬───────────────────────────────────┘
-                            ▼
-┌───────────────────────────────────────────────────────────────┐
-│ Shared artifacts: processed data · database · evaluated models │
-│ benchmark sets · figures · reports · model/LLM artifacts       │
-└───────────────────────────────────────────────────────────────┘
+Processed papers/text
+  ↓
+Chunking (size + overlap)
+  ↓
+Embeddings (sentence-transformers)
+  ↓
+Vector store (chromadb)
+  ↓
+Query → Top-k contexts → Prompt packing → LLM → Grounded answer
 ```
 
 ---
 
-## 5. DA3 Module Router
-
-```text
-                    Incoming request
-                           │
-                           ▼
-                 ┌─────────────────────┐
-                 │   Module classifier │
-                 │  (explicit module   │
-                 │   id from client)   │
-                 └──────────┬──────────┘
-      ┌───────────┬─────────┼─────────┬───────────┐
-      ▼           ▼         ▼         ▼           ▼
- Translator   Stats Adv.  Abstract   Gap Finder  (Future)
-      │           │         │         │
-      └───────────┴────┬────┴─────────┘
-                       ▼
-              Shared LLM + tools
-                       │
-                       ▼
-              Normalized response schema
-              { answer, sources[], confidence, meta }
-```
-
-MVP uses **explicit module selection** from the UI (no automatic intent classifier required for v1).
-
----
-
-## 6. DA1 Document Processing Pipeline
-
-```text
-PDF / text upload
-      │
-      ▼
-┌─────────────┐
-│  Ingest     │  → data/raw_papers/ (+ metadata/)
-└──────┬──────┘
-       ▼
-┌─────────────┐
-│  Extract    │  pymupdf → plain text / pages
-└──────┬──────┘
-       ▼
-┌─────────────┐
-│  Normalize  │  whitespace, encoding, boilerplate removal
-└──────┬──────┘
-       ▼
-┌─────────────┐
-│  Sectionize │  title, abstract, intro, method, ... (heuristic)
-└──────┬──────┘
-       ▼
-┌─────────────┐
-│  Chunk      │  size + overlap; store ids & offsets
-└──────┬──────┘
-       ▼
- data/interim/ → data/processed/
-       │
-       ├── Python EDA / figures
-       └── R analysis / visualizations
-```
-
----
-
-## 7. DA2 Database and Modeling Flow
-
-```text
-data/processed/
-      │
-      ▼
-Database ingestion → schemas + constraints + SQL queries
-      │
-      ▼
-Feature engineering pipeline
-      │
-      ▼
-Consistent train / validation / test split
-      │
-      ├── Baseline
-      ├── Classical ML models
-      ├── Ensemble / boosting models
-      └── Compact DL model (when justified)
-      │
-      ▼
-Metrics + cross-validation + error analysis
-      │
-      ▼
-Comparison tables + comparative visualizations
-```
-
-## 8. DA3 Retrieval Layer (Planned)
-
-```text
-User query / module context
-        │
-        ▼
-   Query embedding (sentence-transformers)
-        │
-        ▼
-   Vector search (chromadb)
-        │
-        ▼
-   Top-k chunks (+ optional rerank)
-        │
-        ▼
-   Context packer (token budget)
-        │
-        ▼
-   Prompt → Fine-tuned LLM
-```
-
-**Module-specific retrieval policy (planned):**
-
-| Module | Retrieval |
-|--------|-----------|
-| Translator | Optional (glossary / similar explanations) |
-| Statistical Advisor | Strongly recommended (stats knowledge snippets) |
-| Abstract Improver | Optional (style exemplars) |
-| Gap Finder | Strongly recommended (multi-paper chunks) |
-
----
-
-## 9. DA3 LLM Training / Artifact Flow
+## 5. Fine-tuning Flow (Phase 3)
 
 ```text
 data/instruction_dataset/
-          │
-          ▼
-   configs/*.yaml  (hyperparams, paths)
-          │
-          ▼
-   scripts/ (LLM train entrypoint — DA3, only if required)
-          │
-          ▼
-   models/adapters/  or  models/checkpoints/
-          │
-          ▼
-   models/exports/  (quantized / merged for serve)
-          │
-          ▼
-   backend model loader
+  ↓
+configs/phase3/finetune.yaml
+  ↓
+scripts/phase3/finetune_model.py
+  ↓
+models/adapters/ or models/checkpoints/
+  ↓
+backend / dashboard model loader
 ```
 
 ---
 
-## 10. Cross-Phase Evaluation Flow
+## 6. Evaluation Across Phases
 
 ```text
-DA1: data quality + EDA validation
-       │
-       ▼
-DA2: held-out predictive metrics + model comparison
-       │
-       ▼
-DA3: data/benchmark/
-       │
-       ▼
-evaluation/ + scripts/
-       │
-       ├── automatic metrics → evaluation/metrics/
-       └── human review notes → evaluation/reports/
+Phase 1: data quality + EDA validation
+Phase 2: held-out ML metrics + model comparison
+Phase 3: assistant benchmarks + RAG grounding + usability
 ```
 
 ---
 
-## 11. Repository Mapping
+## 7. Foundation Non-Goals
 
-| Architectural concern | Repository location |
-|-----------------------|---------------------|
-| Raw & processed data | `data/` |
-| Data cleaning/preprocessing | `src/researchpilot/data/` |
-| R analysis and visualization | `r/` |
-| Database schemas and SQL | `database/` |
-| Feature engineering | `src/researchpilot/features/` |
-| Conventional ML/DL workflows | `src/researchpilot/models/` |
-| Training configs | `configs/` |
-| API & services | `backend/app/` |
-| UI | `frontend/` |
-| Model weights | `models/` |
-| Metrics & reports | `evaluation/` |
-| Course figures and tables | `reports/` |
-| Automation scripts | `scripts/` |
-| Specs & design | `docs/` |
-| Tests | `tests/` |
-| Exploration | `notebooks/` |
+These diagrams do **not** mean the foundation includes:
 
----
+- Implemented collection or EDA code  
+- Trained ML models  
+- Live RAG indexes  
+- Running dashboard  
 
-## 12. Foundation Non-Goals
-
-These diagrams **do not** imply that the foundation includes:
-
-- Running APIs or UI  
-- Implemented RAG or embedding pipelines  
-- Trained model weights  
-- Live vector databases  
-
-They define the target architecture for **DA1, DA2, and DA3**. The presence of DA3 components does not imply that LLM work begins before the DA1 and DA2 quality gates are met.
+They define the target structure for Phase 1–3 implementation.

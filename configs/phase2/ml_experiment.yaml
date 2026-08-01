@@ -1,0 +1,31 @@
+# Phase 2 — Machine learning experiment settings (placeholder)
+
+project: ResearchPilot
+phase: 2
+
+paths:
+  processed: data/processed
+  models: models/checkpoints
+  reports: reports
+  evaluation: evaluation/reports
+
+task:
+  name: TBD                 # classification | regression | clustering
+  target_column: TBD
+  feature_columns: []
+
+models:
+  - baseline
+  - logistic_regression     # or linear_regression
+  - random_forest
+  - xgboost
+  - neural_baseline         # optional small DL model
+
+training:
+  random_state: 42
+  cv_folds: 5
+  test_size: 0.2
+
+metrics:
+  classification: [accuracy, precision, recall, f1, roc_auc]
+  regression: [mae, rmse, r2]

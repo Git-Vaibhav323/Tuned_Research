@@ -1,0 +1,26 @@
+# Phase 3 — Fine-tuning settings (placeholder)
+
+project: ResearchPilot
+phase: 3
+
+paths:
+  instruction_dataset: data/instruction_dataset
+  adapters: models/adapters
+  checkpoints: models/checkpoints
+  exports: models/exports
+
+base_model: TBD
+
+peft:
+  method: lora
+  r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+
+training:
+  epochs: 3
+  learning_rate: 2.0e-4
+  batch_size: 4
+  gradient_accumulation_steps: 4
+  max_seq_length: 2048
+  seed: 42

@@ -1,10 +1,14 @@
-# ResearchPilot configuration directory
+# Configs
 
-Place YAML/JSON configs here in later phases, for example:
+YAML configuration files for reproducible runs.
 
-- `train_translator.yaml`
-- `train_stats_advisor.yaml`
-- `eval_benchmark.yaml`
-- `serve_api.yaml`
+| Path | Phase | Purpose |
+|------|-------|---------|
+| `phase1/data_collection.yaml` | 1 | Sources and output paths |
+| `phase1/preprocessing.yaml` | 1 | Cleaning / preprocessing rules |
+| `phase2/ml_experiment.yaml` | 2 | Models, splits, metrics |
+| `phase3/rag.yaml` | 3 | Chunking, embeddings, retrieval |
+| `phase3/finetune.yaml` | 3 | PEFT / training hyperparameters |
+| `phase3/dashboard.yaml` | 3 | Frontend and API settings |
 
-Foundation: no runtime configs yet. DA1 adds data/EDA configs, DA2 adds database and experiment configs, and DA3 adds serving/assistant configs.
+Values are placeholders until implementation starts.
