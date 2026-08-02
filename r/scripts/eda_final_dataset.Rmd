@@ -1,0 +1,206 @@
+---
+title: "ResearchPilot Phase 1 — Exploratory Data Analysis"
+subtitle: "final_dataset.csv"
+author: "ResearchPilot"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 8,
+  fig.height = 5
+)
+```
+
+# Setup
+
+```{r libraries}
+library(tidyverse)
+library(skimr)
+library(janitor)
+library(scales)
+library(GGally)
+
+theme_set(theme_minimal(base_size = 12))
+```
+
+```{r paths}
+find_project_root <- function() {
+  path <- normalizePath(getwd(), winslash = "/", mustWork = TRUE)
+  for (i in seq_len(6)) {
+    candidate <- file.path(path, "data", "final", "final_dataset.csv")
+    if (file.exists(candidate)) return(path)
+    parent <- dirname(path)
+    if (identical(parent, path)) break
+    path <- parent
+  }
+  stop("Project root with data/final/final_dataset.csv not found.")
+}
+
+project_root <- find_project_root()
+input_csv <- file.path(project_root, "data", "final", "final_dataset.csv")
+viz_dir <- file.path(project_root, "r", "visualizations")
+dir.create(viz_dir, recursive = TRUE, showWarnings = FALSE)
+```
+
+# Load data
+
+```{r load}
+papers <- read_csv(input_csv, show_col_types = FALSE) %>%
+  mutate(
+    publication_year = as.integer(publication_year),
+    cited_by_count = as.numeric(cited_by_count),
+    is_open_access = as.logical(is_open_access),
+    has_fulltext = as.logical(has_fulltext),
+    recent_paper = as.integer(recent_paper),
+    has_doi = as.integer(has_doi),
+    oa_status = factor(oa_status),
+    oa_category = factor(
+      oa_category,
+      levels = c("fully_open", "partially_open", "closed", "unknown")
+    )
+  )
+
+glimpse(papers)
+```
+
+# Dataset overview
+
+```{r overview}
+dim(papers)
+skim(papers)
+```
+
+# Missing values
+
+```{r missing}
+missing_tbl <- papers %>%
+  summarise(across(everything(), ~ sum(is.na(.x)))) %>%
+  pivot_longer(everything(), names_to = "column", values_to = "n_missing") %>%
+  mutate(pct_missing = round(100 * n_missing / nrow(papers), 2)) %>%
+  arrange(desc(n_missing))
+
+missing_tbl
+```
+
+# Papers by year and age
+
+```{r year-age}
+papers %>% count(publication_year)
+
+ggplot(papers, aes(x = factor(publication_year))) +
+  geom_bar(fill = "#1B9E77") +
+  labs(title = "Papers by Publication Year", x = "Year", y = "Count")
+
+ggplot(papers, aes(x = paper_age)) +
+  geom_bar(fill = "#7570B3") +
+  labs(title = "Paper Age Distribution", x = "Age (years)", y = "Count")
+```
+
+# Citation analysis
+
+```{r citations}
+papers %>%
+  summarise(
+    mean = mean(cited_by_count),
+    median = median(cited_by_count),
+    max = max(cited_by_count),
+    mean_per_year = mean(citation_per_year),
+    median_log = median(citation_log)
+  )
+
+ggplot(papers, aes(x = cited_by_count)) +
+  geom_histogram(bins = 40, fill = "#D95F02", color = "white") +
+  scale_x_continuous(labels = comma) +
+  labs(title = "Raw Citation Counts", x = "cited_by_count", y = "Count")
+
+ggplot(papers, aes(x = citation_log)) +
+  geom_histogram(bins = 40, fill = "#E7298A", color = "white") +
+  labs(title = "Log Citations", x = "citation_log", y = "Count")
+
+ggplot(papers, aes(x = factor(publication_year), y = citation_log)) +
+  geom_boxplot(fill = "#A6761D", alpha = 0.8) +
+  labs(title = "Log Citations by Year", x = "Year", y = "citation_log")
+```
+
+# Text length and topical richness
+
+```{r text-topics}
+ggplot(papers, aes(x = title_length)) +
+  geom_histogram(bins = 35, fill = "#1F78B4", color = "white") +
+  labs(title = "Title Length", x = "Characters", y = "Count")
+
+ggplot(papers, aes(x = abstract_length)) +
+  geom_histogram(bins = 35, fill = "#33A02C", color = "white") +
+  labs(title = "Abstract Length", x = "Characters", y = "Count")
+
+ggplot(papers, aes(x = keyword_count, y = concept_count)) +
+  geom_point(alpha = 0.25, color = "#7570B3") +
+  geom_smooth(method = "lm", se = TRUE, color = "#E7298A") +
+  labs(title = "Keywords vs Concepts")
+```
+
+# Open access
+
+```{r oa}
+papers %>%
+  count(oa_category) %>%
+  mutate(pct = round(100 * n / sum(n), 1))
+
+ggplot(papers, aes(x = oa_category, fill = oa_category)) +
+  geom_bar(show.legend = FALSE) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(title = "OA Category", x = NULL, y = "Count")
+
+ggplot(papers, aes(x = oa_category, y = citation_log, fill = oa_category)) +
+  geom_boxplot(show.legend = FALSE) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(title = "Log Citations by OA Category")
+```
+
+# Correlation heatmap
+
+```{r correlation, fig.width=9, fig.height=7}
+numeric_feats <- papers %>%
+  select(
+    publication_year, cited_by_count, paper_age, title_length,
+    abstract_length, keyword_count, concept_count, citation_per_year,
+    citation_log, recent_paper, has_doi
+  )
+
+corr_long <- as.data.frame(as.table(cor(numeric_feats, use = "pairwise.complete.obs"))) %>%
+  rename(feature_x = Var1, feature_y = Var2, correlation = Freq)
+
+ggplot(corr_long, aes(feature_x, feature_y, fill = correlation)) +
+  geom_tile(color = "white") +
+  geom_text(aes(label = sprintf("%.2f", correlation)), size = 2.5) +
+  scale_fill_gradient2(low = "#B2182B", mid = "white", high = "#2166AC", midpoint = 0) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Numeric Feature Correlations", x = NULL, y = NULL)
+```
+
+# Top cited papers
+
+```{r top-cited}
+papers %>%
+  arrange(desc(cited_by_count)) %>%
+  select(title, publication_year, cited_by_count, citation_per_year, oa_category) %>%
+  slice_head(n = 10) %>%
+  knitr::kable()
+```
+
+# Interpretation prompts
+
+1. How are papers distributed across years?
+2. How skewed are citations, and does `citation_log` help?
+3. Do OA categories differ in impact?
+4. Which engineered features look useful for Phase 2 ML?
+5. What limitations or biases should be documented?

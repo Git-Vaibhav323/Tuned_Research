@@ -1,0 +1,4 @@
+oa_category,n_papers,median_citations,median_citation_per_year,median_abstract_length,mean_keyword_count,mean_concept_count
+fully_open,834,336,105.125,1356,12.213429256594724,15.160671462829736
+partially_open,723,358,110.3333,1335,12.044260027662517,15.311203319502075
+closed,443,320,95.3333,1354,11.961625282167043,15.354401805869074

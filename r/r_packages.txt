@@ -1,0 +1,7 @@
+tidyverse>=2.0.0
+skimr
+janitor
+scales
+GGally
+rmarkdown
+knitr
