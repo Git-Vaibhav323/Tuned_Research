@@ -1,30 +1,25 @@
-# R Analysis and Visualization
+# ResearchPilot R Analysis
 
-Phase 1 scripts for ResearchPilot — including faculty presentation materials.
+## Scripts
 
-## Scripts (run in this order for viva)
+| Script | Purpose |
+|--------|---------|
+| `02_data_understanding.R` | Dataset overview, feature dictionary, schema, sample rows |
+| `03_data_preprocessing.R` | Missing values, cleaning, encoding, normalization |
+| `04_eda_visualizations.R` | EDA graphs and summary tables |
 
-| # | File | Rubric focus |
-|---|------|----------------|
-| 0 | `scripts/00_install_packages.R` | Setup (once) |
-| 1 | `scripts/01_eda_final_dataset.R` | EDA visuals (**done**) |
-| 2 | `scripts/02_dataset_understanding.R` | Feature description |
-| 3 | `scripts/03_preprocessing_cleaning_demo.R` | Cleaning / missing / encoding / normalization |
-| 4 | `scripts/04_faculty_phase1_report.Rmd` | Full faculty walkthrough (all rubric items) |
-
-Also see: `FACULTY_PRESENTATION_GUIDE.md`
-
-## Quick start for faculty demo
+## How to run
 
 ```r
 setwd("E:/Tuned_Research")
-source("r/scripts/02_dataset_understanding.R")
-source("r/scripts/03_preprocessing_cleaning_demo.R")
-rmarkdown::render("r/scripts/04_faculty_phase1_report.Rmd")
+
+source("r/scripts/02_data_understanding.R")
+source("r/scripts/03_data_preprocessing.R")
+source("r/scripts/04_eda_visualizations.R")
 ```
 
 ## Outputs
 
-- Figures: `r/visualizations/`, `reports/figures/`
+- Figures: `r/visualizations/`
 - Tables: `reports/tables/`
-- Reports: `reports/preprocessing_report_r.md`, HTML from the Rmd
+- Preprocessing report: `reports/preprocessing_report_r.md`
