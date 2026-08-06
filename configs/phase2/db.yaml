@@ -1,0 +1,21 @@
+# Phase 2 — Database configuration (M1)
+
+engine: sqlite
+
+paths:
+  # Relative to project root
+  database: database/researchpilot.db
+  schemas_dir: database/schemas
+  source_csv: data/final/final_dataset.csv
+
+load:
+  # Rebuild papers table from Phase 1 CSV on each run
+  replace_papers: true
+  # Phase 1 CSV is never modified
+  phase1_read_only: true
+
+schema_files:
+  - 01_papers.sql
+  - 02_ml_features.sql
+  - 03_experiments.sql
+  - 04_manifest.sql
