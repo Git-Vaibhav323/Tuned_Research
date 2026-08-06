@@ -1,28 +1,28 @@
-feature,type,description,phase_created
-id,identifier,OpenAlex work ID (unique paper URL),collection
-title,text,Paper title,collection
-abstract,text,Plain-text abstract reconstructed from OpenAlex,collection
-publication_year,integer,Year the paper was published (2022–2025),collection
-cited_by_count,numeric,Total citations recorded by OpenAlex,collection
-language,categorical,Language code (kept English only),collection
-type,categorical,Work type (article),collection
-concepts,json/text,Raw OpenAlex concepts JSON,collection
-keywords,json/text,Raw OpenAlex keywords JSON,collection
-doi,identifier,Digital Object Identifier,collection
-open_access,json/text,Raw open-access metadata JSON,collection
-concepts_clean,text,Readable concept names joined by '; ',feature extraction
-keywords_clean,text,Readable keyword names joined by '; ',feature extraction
-is_open_access,boolean,TRUE if paper is open access,feature extraction
-oa_status,categorical,OpenAlex OA status (gold/hybrid/green/...),feature extraction
-oa_url,text,URL to OA full text when available,feature extraction
-has_fulltext,boolean,Whether a repository reports fulltext,feature extraction
-paper_age,integer,Years since publication (reference year 2026),feature engineering
-title_length,integer,Character length of title,feature engineering
-abstract_length,integer,Character length of abstract,feature engineering
-keyword_count,integer,Number of keywords,feature engineering
-concept_count,integer,Number of concepts,feature engineering
-citation_per_year,numeric,"cited_by_count / max(paper_age, 1)",feature engineering
-citation_log,numeric,ln(1 + cited_by_count),feature engineering
-recent_paper,binary,"1 if paper_age <= 2, else 0",feature engineering
-has_doi,binary,"1 if DOI present, else 0",feature engineering
-oa_category,categorical,fully_open / partially_open / closed,feature engineering
+feature,type,description
+id,identifier,OpenAlex work ID
+title,text,Paper title
+abstract,text,Paper abstract
+publication_year,integer,Publication year (2022-2025)
+cited_by_count,numeric,Total citation count
+language,categorical,Language code
+type,categorical,Work type (article)
+concepts,json/text,Raw OpenAlex concepts
+keywords,json/text,Raw OpenAlex keywords
+doi,identifier,Digital Object Identifier
+open_access,json/text,Raw open-access metadata
+concepts_clean,text,Readable concept names
+keywords_clean,text,Readable keyword names
+is_open_access,boolean,Whether the paper is open access
+oa_status,categorical,OpenAlex OA status
+oa_url,text,Open-access fulltext URL
+has_fulltext,boolean,Whether fulltext is available
+paper_age,integer,Years since publication
+title_length,integer,Title length in characters
+abstract_length,integer,Abstract length in characters
+keyword_count,integer,Number of keywords
+concept_count,integer,Number of concepts
+citation_per_year,numeric,Citations divided by paper age
+citation_log,numeric,Natural log of (1 + citations)
+recent_paper,binary,"1 if paper age <= 2, else 0"
+has_doi,binary,"1 if DOI is present, else 0"
+oa_category,categorical,fully_open / partially_open / closed

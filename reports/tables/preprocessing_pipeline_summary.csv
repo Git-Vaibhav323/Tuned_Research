@@ -1,0 +1,10 @@
+step,operation,result
+1,Load raw data,"2000 rows, 11 columns"
+2,Missing value audit,2 missing cells before cleaning
+3,Clean title and abstract,Removed newlines and extra spaces
+4,Type conversion,publication_year and cited_by_count as integer
+5,Language filter,Kept English records only
+6,DOI deduplication,Removed duplicate DOIs
+7,Encoding,language and type converted to numeric codes
+8,Normalization,"cited_by_count scaled to [0, 1]"
+9,Final cleaned data,"2000 rows, 11 columns"

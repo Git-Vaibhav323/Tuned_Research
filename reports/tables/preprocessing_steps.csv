@@ -1,0 +1,7 @@
+step,detail,rows_before,rows_after,rows_removed
+load_raw,Read raw_papers.csv,2000,2000,0
+clean_title,Remove newlines and extra spaces in title,2000,2000,0
+clean_abstract,Normalize whitespace; remove empty abstracts,2000,2000,0
+type_conversion,Convert year and citations to integer,2000,2000,0
+language_filter,Keep English records only,2000,2000,0
+doi_dedup,Remove duplicate DOIs; keep highest citations,2000,2000,0
