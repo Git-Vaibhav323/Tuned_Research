@@ -1,0 +1,63 @@
+# Phase 2 / M3 — Feature selection & preprocessing polish
+# Consumes M2 matrices; does not modify Phase 1 or re-derive splits.
+
+feature_version: v1_m3
+
+paths:
+  ml_dir: data/ml
+  m3_dir: data/ml/m3
+  reports_dir: reports
+  # M2 inputs
+  x_oa_full: data/ml/X_oa_category_full.csv
+  y_oa: data/ml/y_oa_category.csv
+  x_impact_full: data/ml/X_impact_tier_full.csv
+  y_impact: data/ml/y_impact_tier.csv
+  feature_lists: data/ml/feature_lists.json
+
+primary_track: oa_category
+secondary_track: impact_tier
+
+# Continuous structural columns to StandardScaler (train-fit only).
+# TF-IDF columns are left unscaled (already L2-normalized by TfidfVectorizer).
+scale_structural:
+  oa_category:
+    - publication_year
+    - paper_age
+    - title_length
+    - abstract_length
+    - keyword_count
+    - concept_count
+    - recent_paper
+  impact_tier:
+    - publication_year
+    - paper_age
+    - title_length
+    - abstract_length
+    - keyword_count
+    - concept_count
+    - recent_paper
+    - is_open_access
+    - has_fulltext
+
+selection:
+  random_state: 42
+  k_best: 30
+  # Drop near-zero variance columns before ranking
+  variance_threshold: 1.0e-8
+  methods:
+    - mutual_info
+    - anova_f
+    - random_forest
+    - rfe_logreg
+  # Final set = features selected by at least this many methods (then pad to k_best by MI rank)
+  consensus_min_votes: 2
+  # RandomForest settings for importance ranking
+  rf_n_estimators: 200
+  # RFE can be slow; step removes this many features per iteration
+  rfe_step: 5
+
+encoding:
+  # Persist LabelEncoder mappings for M4 trainers
+  targets:
+    - oa_category
+    - impact_tier

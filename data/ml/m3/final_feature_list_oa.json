@@ -1,0 +1,43 @@
+{
+  "track": "oa_category",
+  "n_features": 30,
+  "features": [
+    "tfidf_used",
+    "tfidf_image",
+    "tfidf_intelligence",
+    "tfidf_artificial intelligence",
+    "keyword_count",
+    "tfidf_state",
+    "tfidf_ml",
+    "tfidf_art",
+    "tfidf_machine",
+    "tfidf_chatgpt",
+    "tfidf_finally",
+    "tfidf_existing",
+    "tfidf_analysis",
+    "tfidf_review",
+    "tfidf_ai",
+    "tfidf_data",
+    "abstract_length",
+    "tfidf_state art",
+    "tfidf_new",
+    "tfidf_detection",
+    "tfidf_attention",
+    "tfidf_tasks",
+    "tfidf_information",
+    "tfidf_machine learning",
+    "tfidf_approaches",
+    "tfidf_time",
+    "tfidf_education",
+    "tfidf_models",
+    "tfidf_feature",
+    "concept_count"
+  ],
+  "methods": [
+    "mutual_info",
+    "anova_f",
+    "random_forest",
+    "rfe_logreg"
+  ],
+  "consensus_min_votes": 2
+}

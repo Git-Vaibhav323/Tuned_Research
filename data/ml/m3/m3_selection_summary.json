@@ -1,0 +1,103 @@
+{
+  "feature_version": "v1_m3",
+  "n_features_oa_input": 107,
+  "n_features_after_variance": 107,
+  "dropped_low_variance": [],
+  "k_best": 30,
+  "n_final_features": 30,
+  "final_features": [
+    "tfidf_used",
+    "tfidf_image",
+    "tfidf_intelligence",
+    "tfidf_artificial intelligence",
+    "keyword_count",
+    "tfidf_state",
+    "tfidf_ml",
+    "tfidf_art",
+    "tfidf_machine",
+    "tfidf_chatgpt",
+    "tfidf_finally",
+    "tfidf_existing",
+    "tfidf_analysis",
+    "tfidf_review",
+    "tfidf_ai",
+    "tfidf_data",
+    "abstract_length",
+    "tfidf_state art",
+    "tfidf_new",
+    "tfidf_detection",
+    "tfidf_attention",
+    "tfidf_tasks",
+    "tfidf_information",
+    "tfidf_machine learning",
+    "tfidf_approaches",
+    "tfidf_time",
+    "tfidf_education",
+    "tfidf_models",
+    "tfidf_feature",
+    "concept_count"
+  ],
+  "method_agreement": [
+    {
+      "method": "mutual_info",
+      "k": 30,
+      "overlap_with_final": 20,
+      "overlap_pct": 66.67
+    },
+    {
+      "method": "anova_f",
+      "k": 30,
+      "overlap_with_final": 22,
+      "overlap_pct": 73.33
+    },
+    {
+      "method": "random_forest",
+      "k": 30,
+      "overlap_with_final": 15,
+      "overlap_pct": 50.0
+    },
+    {
+      "method": "rfe_logreg",
+      "k": 30,
+      "overlap_with_final": 19,
+      "overlap_pct": 63.33
+    }
+  ],
+  "oa_classes": [
+    "closed",
+    "fully_open",
+    "partially_open"
+  ],
+  "impact_classes": [
+    "high",
+    "low",
+    "medium"
+  ],
+  "scale_cols_oa": [
+    "publication_year",
+    "paper_age",
+    "title_length",
+    "abstract_length",
+    "keyword_count",
+    "concept_count",
+    "recent_paper"
+  ],
+  "scale_cols_imp": [
+    "publication_year",
+    "paper_age",
+    "title_length",
+    "abstract_length",
+    "keyword_count",
+    "concept_count",
+    "recent_paper",
+    "is_open_access",
+    "has_fulltext"
+  ],
+  "split_counts": {
+    "train": 1399,
+    "test": 301,
+    "val": 300
+  },
+  "m3_dir": "E:/Tuned_Research/data/ml/m3",
+  "agreement_plot": "E:/Tuned_Research/reports/figures/m3_feature_selection_agreement.png"
+}

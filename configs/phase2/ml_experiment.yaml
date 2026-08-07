@@ -6,11 +6,21 @@ phase: 2
 paths:
   source_csv: data/final/final_dataset.csv
   ml_dir: data/ml
+  m3_dir: data/ml/m3
   database: database/researchpilot.db
   models: models/checkpoints
   reports: reports
   evaluation: evaluation/reports
   features_config: configs/phase2/features.yaml
+  selection_config: configs/phase2/feature_selection.yaml
+  # M4 should consume M3 final matrices
+  x_train: data/ml/m3/oa_train.csv
+  y_train: data/ml/m3/oa_train_y.csv
+  x_val: data/ml/m3/oa_val.csv
+  y_val: data/ml/m3/oa_val_y.csv
+  x_test: data/ml/m3/oa_test.csv
+  y_test: data/ml/m3/oa_test_y.csv
+  preprocessor: data/ml/m3/preprocessor_bundle.joblib
 
 # Primary graded task (DA2 spine)
 primary_task:

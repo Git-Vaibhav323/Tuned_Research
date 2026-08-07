@@ -68,10 +68,20 @@ Vectorizer path: `data/ml/tfidf_vectorizer.joblib`
 
 ## Feature selection (primary track)
 
+### M2 (initial)
+
 - Method: mutual information (`SelectKBest`)
 - Fit on **train** only, target = `oa_category`
 - Keep top **k = 30** features → `data/ml/X_oa_category_selected.*`
-- Scores: `data/ml/feature_selection_scores_oa.csv`
+
+### M3 (final for modeling)
+
+- Methods compared: mutual information, ANOVA F, Random Forest importance, RFE+LogReg
+- Consensus: features in ≥ 2 method top-30 lists (pad by MI)
+- Structural StandardScaler + LabelEncoder (train-fit)
+- Final matrices: `data/ml/m3/X_oa_final.csv`, split files `oa_train/val/test.csv`
+- Bundle: `data/ml/m3/preprocessor_bundle.joblib`
+- Report: `reports/phase2_m3_feature_selection_report.md`
 
 ---
 
