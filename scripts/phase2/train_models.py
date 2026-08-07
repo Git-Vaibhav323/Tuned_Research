@@ -1,11 +1,14 @@
-"""Phase 2 — Train and compare ML models (scaffold only).
+"""Phase 2 — Train models (delegates to M4 entrypoint)."""
 
-Implementation deferred. Use configs/phase2/ml_experiment.yaml.
-"""
+from __future__ import annotations
+
+import runpy
+from pathlib import Path
 
 
 def main() -> None:
-    raise NotImplementedError("Phase 2 model training is not implemented yet.")
+    target = Path(__file__).with_name("04_train_models.py")
+    runpy.run_path(str(target), run_name="__main__")
 
 
 if __name__ == "__main__":

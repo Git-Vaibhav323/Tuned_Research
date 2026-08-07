@@ -17,7 +17,8 @@ Phase 2 continues directly from the Phase 1 OpenAlex corpus (`data/final/final_d
 | **M1** | Database connectivity (SQLite) | Done |
 | **M2** | Feature engineering, splits, impact tiers | Done |
 | **M3** | Multi-method feature selection + preprocessing | Done |
-| M4–M8 | Model training, tuning, comparison, docs | Pending |
+| **M4** | Train 10–15 ML algorithms (OA category) | Done — see [M4_Model_Training_Report.md](M4_Model_Training_Report.md) |
+| M5–M8 | Tuning, comparison viz, impact track, final docs | Pending |
 
 **Primary ML task (locked):** multiclass prediction of `oa_category`  
 (`fully_open` / `partially_open` / `closed`)
@@ -35,11 +36,11 @@ This folder packages the DA2 progress documentation for work completed through M
 |-----------------|-------|----------------------|
 | 1. Feature engineering & feature selection | 1 | **Satisfied** (M2 + M3) |
 | 2. Database connectivity | 2 | **Satisfied** (M1 + M2 `ml_features`) |
-| 3. 10–15 ML/DL algorithms | 3 | Pending (M4) |
+| 3. 10–15 ML/DL algorithms | 3 | **Satisfied (M4)** — 14 models trained |
 | 4. Hyperparameter tuning | 1 | Pending (M5) |
-| 5. Comparative performance analysis | 1 | Pending (M6) |
-| 6. Comparative visualizations | 1 | Partial (M3 agreement plot); full ROC/CM in M6 |
-| 7. Progress demo & documentation (75%) | 1 | **In progress** — this DA2 pack documents M1–M3 |
+| 5. Comparative performance analysis | 1 | Partial (M4 leaderboard); full pack in M6 |
+| 6. Comparative visualizations | 1 | Partial (M3 + M4 plots); ROC/CM suite in M6 |
+| 7. Progress demo & documentation (75%) | 1 | **In progress** — DA2 pack documents M1–M4 |
 
 ---
 
@@ -168,12 +169,15 @@ M2  Feature matrices + splits + impact_tier + TF-IDF
 M3  Consensus selection + scaling + label encoding
         │     data/ml/m3/*
         ▼
-M4  Train 10–15 models   ← NEXT
+M4  Train 14 models (champion: AdaBoost)
+        │     evaluation/reports/m4/  +  models/checkpoints/m4/
+        ▼
+M5  Hyperparameter tuning   ← NEXT
 ```
 
 ---
 
-## 8. How to rebuild M1–M3 from scratch
+## 8. How to rebuild M1–M4 from scratch
 
 From project root `E:\Tuned_Research`:
 
@@ -181,6 +185,7 @@ From project root `E:\Tuned_Research`:
 python scripts/phase2/01_load_to_db.py
 python scripts/phase2/02_build_ml_features.py
 python scripts/phase2/03_feature_selection.py
+python scripts/phase2/04_train_models.py
 python scripts/phase2/run_db_queries.py
 ```
 
@@ -204,11 +209,11 @@ python scripts/phase2/run_db_queries.py
 | Feature dictionary | `data/metadata/phase2_feature_dictionary.md` |
 | Detailed reports (repo) | `reports/phase2_m1_*.md`, `phase2_m2_*.md`, `phase2_m3_*.md` |
 
-### M4 entrypoint (ready)
-- Features: `data/ml/m3/oa_train.csv` / `oa_val.csv` / `oa_test.csv`
-- Labels: `data/ml/m3/oa_train_y.csv` / `oa_val_y.csv` / `oa_test_y.csv`
-- Bundle: `data/ml/m3/preprocessor_bundle.joblib`
-- Target: `oa_category`
+### M4 outputs (complete)
+- Leaderboard: `evaluation/reports/m4/leaderboard.csv`
+- Checkpoints: `models/checkpoints/m4/` (AdaBoost, Extra Trees, Gradient Boosting)
+- Report: [M4_Model_Training_Report.md](M4_Model_Training_Report.md)
+- Champion: **AdaBoost** (test macro-F1 ≈ 0.452, accuracy ≈ 0.482)
 
 ---
 
@@ -216,7 +221,7 @@ python scripts/phase2/run_db_queries.py
 
 | Milestone | Work |
 |-----------|------|
-| **M4** | Implement and train 10–15 ML/DL algorithms on OA track |
+| **M4** | Done — 14 algorithms trained |
 | **M5** | Hyperparameter tuning on top models |
 | **M6** | Comparative metrics + ROC / PR / confusion matrix / feature importance |
 | **M7** | Impact-tier track + light clustering (research-intelligence narrative) |
@@ -229,14 +234,17 @@ python scripts/phase2/run_db_queries.py
 | File | Description |
 |------|-------------|
 | `README.md` | Index of this folder |
-| `DA2_Progress_Report_M1_M2_M3.md` | This consolidated report |
+| `DA2_Progress_Report_M1_M2_M3.md` | Consolidated report (updated for M4) |
 | `M1_Database_Connectivity_Report.md` | Full M1 report |
 | `M2_Feature_Engineering_Report.md` | Full M2 report |
 | `M3_Feature_Selection_Report.md` | Full M3 report |
+| `M4_Model_Training_Report.md` | Full M4 report |
+| `m4_leaderboard.csv` / `m4_leaderboard.md` | Model comparison table |
 | `figures/m3_feature_selection_agreement.png` | M3 method-agreement chart |
+| `figures/m4_model_comparison_f1.png` | M4 macro-F1 comparison |
 
 ---
 
 ## 12. Conclusion
 
-Through **M1–M3**, ResearchPilot has a working SQLite layer, leakage-aware feature engineering, stratified splits, a consensus-selected 30-feature modeling matrix, and persisted preprocessors. The project is ready to begin **M4 model training** without changing Phase 1.
+Through **M1–M4**, ResearchPilot has SQLite connectivity, leakage-aware features, consensus selection, and **14** trained classifiers for open-access category prediction (**AdaBoost** champion). Next step: **M5 hyperparameter tuning**.

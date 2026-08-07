@@ -44,7 +44,7 @@ training:
   val_size: 0.15
 
 models:
-  # Populated / trained in M4 — list reserved for 10–15 algorithms
+  # M4 — 14 algorithms (see configs/phase2/models.yaml)
   - dummy
   - logistic_regression
   - gaussian_nb
@@ -57,6 +57,7 @@ models:
   - adaboost
   - gradient_boosting
   - xgboost
+  - lightgbm
   - mlp
 
 metrics:

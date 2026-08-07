@@ -1,0 +1,31 @@
+# Phase 2 / M4 — model training defaults
+# Consumes M3 matrices; primary track = oa_category
+
+random_state: 42
+cv_folds: 5
+# Score used for CV ranking and experiment_runs.cv_score
+cv_scoring: f1_macro
+
+# Persist top-N fitted models as joblib
+save_top_n: 3
+
+paths:
+  out_dir: evaluation/reports/m4
+  checkpoints: models/checkpoints/m4
+  figures: reports/figures
+
+models:
+  - dummy
+  - logistic_regression
+  - gaussian_nb
+  - knn
+  - linear_svc
+  - svc_rbf
+  - decision_tree
+  - random_forest
+  - extra_trees
+  - adaboost
+  - gradient_boosting
+  - xgboost
+  - lightgbm
+  - mlp
