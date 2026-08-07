@@ -132,6 +132,9 @@ data/final/**
 !data/final/.gitkeep
 data/instruction_dataset/**
 !data/instruction_dataset/.gitkeep
+data/ml/**
+!data/ml/.gitkeep
+!data/ml/*.json
 # Allow small tracked samples later via explicit git add -f if needed
 # Benchmarks may be committed when small and license-cleared:
 # data/benchmark/ is NOT fully ignored by default

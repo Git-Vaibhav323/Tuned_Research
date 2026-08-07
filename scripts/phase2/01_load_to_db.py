@@ -92,15 +92,41 @@ def prepare_papers_frame(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
-def load_papers(conn, df: pd.DataFrame, replace: bool = True) -> int:
+def _table_exists(conn, name: str) -> bool:
+    row = conn.execute(
+        "SELECT 1 FROM sqlite_master WHERE type='table' AND name=? LIMIT 1;",
+        (name,),
+    ).fetchone()
+    return row is not None
+
+
+def clear_papers_dependents(conn) -> list[str]:
+    """Delete child rows that reference papers before replacing papers.
+
+    Order matters under PRAGMA foreign_keys=ON (set by connect()).
+    After a full papers reload, M2 must be re-run to refill ml_features.
+    """
+    cleared: list[str] = []
+    # predictions -> papers (and experiment_runs)
+    for table in ("predictions", "ml_features"):
+        if _table_exists(conn, table):
+            conn.execute(f"DELETE FROM {table};")
+            cleared.append(table)
+    conn.commit()
+    return cleared
+
+
+def load_papers(conn, df: pd.DataFrame, replace: bool = True) -> tuple[int, list[str]]:
+    cleared: list[str] = []
     if replace:
+        cleared = clear_papers_dependents(conn)
         conn.execute("DELETE FROM papers;")
         conn.commit()
 
     df.to_sql("papers", conn, if_exists="append", index=False)
     conn.commit()
     n = conn.execute("SELECT COUNT(*) FROM papers;").fetchone()[0]
-    return int(n)
+    return int(n), cleared
 
 
 def write_manifest(conn, source_csv: Path, db_path: Path, n_rows: int, n_cols: int) -> None:
@@ -161,20 +187,27 @@ def main() -> None:
         applied = apply_schemas(conn, cfg)
         print(f"Schemas      : {', '.join(applied)}")
 
-        n = load_papers(conn, df, replace=bool(cfg.get("load", {}).get("replace_papers", True)))
+        n, cleared = load_papers(
+            conn, df, replace=bool(cfg.get("load", {}).get("replace_papers", True))
+        )
+        if cleared:
+            print(f"Cleared dependents: {', '.join(cleared)} (FK-safe reload)")
+            print("Note           : Re-run M2 after reload:")
+            print("                 python scripts/phase2/02_build_ml_features.py")
+
         write_manifest(conn, source_csv, db_path, n, df.shape[1])
 
         checks = verify(conn)
         print("--- Verification ---")
         print(f"Rows in papers     : {checks['n_papers']}")
         print(f"Distinct oa_category: {checks['n_oa_categories']}")
-        print(f"Year range         : {checks['year_min']}–{checks['year_max']}")
+        print(f"Year range         : {checks['year_min']}-{checks['year_max']}")
         print(f"Tables             : {', '.join(checks['tables'])}")
 
         if checks["n_papers"] != 2000:
             print(f"WARNING: expected 2000 papers, found {checks['n_papers']}")
         else:
-            print("Status           : OK — 2000 papers loaded; Phase 1 CSV unchanged.")
+            print("Status           : OK - 2000 papers loaded; Phase 1 CSV unchanged.")
     finally:
         conn.close()
 

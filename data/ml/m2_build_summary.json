@@ -1,0 +1,43 @@
+{
+  "n_rows": 2000,
+  "split_counts": {
+    "train": 1399,
+    "test": 301,
+    "val": 300
+  },
+  "oa_counts": {
+    "fully_open": 834,
+    "partially_open": 723,
+    "closed": 443
+  },
+  "impact_counts": {
+    "high": 674,
+    "low": 669,
+    "medium": 657
+  },
+  "impact_thresholds": {
+    "q_low": 87.3333,
+    "q_high": 134.0
+  },
+  "n_features_oa_full": 107,
+  "n_features_oa_selected": 30,
+  "n_features_impact": 112,
+  "selected_oa_preview": [
+    "abstract_length",
+    "keyword_count",
+    "tfidf_ai",
+    "tfidf_application",
+    "tfidf_art",
+    "tfidf_artificial intelligence",
+    "tfidf_attention",
+    "tfidf_chatgpt",
+    "tfidf_data",
+    "tfidf_datasets",
+    "tfidf_detection",
+    "tfidf_different",
+    "tfidf_finally",
+    "tfidf_generative",
+    "tfidf_image"
+  ],
+  "ml_dir": "E:/Tuned_Research/data/ml"
+}

@@ -1,31 +1,60 @@
-# Phase 2 — Machine learning experiment settings (placeholder)
+# Phase 2 — Machine learning experiment settings
 
 project: ResearchPilot
 phase: 2
 
 paths:
-  processed: data/processed
+  source_csv: data/final/final_dataset.csv
+  ml_dir: data/ml
+  database: database/researchpilot.db
   models: models/checkpoints
   reports: reports
   evaluation: evaluation/reports
+  features_config: configs/phase2/features.yaml
 
-task:
-  name: TBD                 # classification | regression | clustering
-  target_column: TBD
-  feature_columns: []
+# Primary graded task (DA2 spine)
+primary_task:
+  name: oa_category_classification
+  problem_type: multiclass_classification
+  target_column: oa_category
+  classes: [fully_open, partially_open, closed]
 
-models:
-  - baseline
-  - logistic_regression     # or linear_regression
-  - random_forest
-  - xgboost
-  - neural_baseline         # optional small DL model
+# Secondary intelligence task
+secondary_task:
+  name: impact_tier_classification
+  problem_type: multiclass_classification
+  target_column: impact_tier
+  classes: [low, medium, high]
 
 training:
   random_state: 42
   cv_folds: 5
-  test_size: 0.2
+  # Exact fractions live in features.yaml; mirrored here for trainers (M4)
+  test_size: 0.15
+  val_size: 0.15
+
+models:
+  # Populated / trained in M4 — list reserved for 10–15 algorithms
+  - dummy
+  - logistic_regression
+  - gaussian_nb
+  - knn
+  - linear_svc
+  - svc_rbf
+  - decision_tree
+  - random_forest
+  - extra_trees
+  - adaboost
+  - gradient_boosting
+  - xgboost
+  - mlp
 
 metrics:
-  classification: [accuracy, precision, recall, f1, roc_auc]
-  regression: [mae, rmse, r2]
+  classification:
+    - accuracy
+    - precision_macro
+    - recall_macro
+    - f1_macro
+    - f1_weighted
+    - roc_auc_ovr
+    - average_precision

@@ -1,0 +1,65 @@
+{
+  "oa_category": {
+    "classes": [
+      "fully_open",
+      "partially_open",
+      "closed"
+    ],
+    "counts_all": {
+      "fully_open": 834,
+      "partially_open": 723,
+      "closed": 443
+    },
+    "counts_by_split": {
+      "train": {
+        "fully_open": 583,
+        "partially_open": 506,
+        "closed": 310
+      },
+      "val": {
+        "fully_open": 125,
+        "partially_open": 108,
+        "closed": 67
+      },
+      "test": {
+        "fully_open": 126,
+        "partially_open": 109,
+        "closed": 66
+      }
+    }
+  },
+  "impact_tier": {
+    "classes": [
+      "low",
+      "medium",
+      "high"
+    ],
+    "thresholds_train": {
+      "q_low": 87.3333,
+      "q_high": 134.0
+    },
+    "source_column": "citation_per_year",
+    "counts_all": {
+      "high": 674,
+      "low": 669,
+      "medium": 657
+    },
+    "counts_by_split": {
+      "train": {
+        "medium": 467,
+        "low": 467,
+        "high": 465
+      },
+      "val": {
+        "low": 110,
+        "high": 99,
+        "medium": 91
+      },
+      "test": {
+        "high": 110,
+        "medium": 99,
+        "low": 92
+      }
+    }
+  }
+}
