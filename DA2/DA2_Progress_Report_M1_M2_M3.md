@@ -19,7 +19,8 @@ Phase 2 continues directly from the Phase 1 OpenAlex corpus (`data/final/final_d
 | **M3** | Multi-method feature selection + preprocessing | Done |
 | **M4** | Train 10–15 ML algorithms (OA category) | Done — see [M4_Model_Training_Report.md](M4_Model_Training_Report.md) |
 | **M5** | Hyperparameter tuning | Done — see [M5_Hyperparameter_Tuning_Report.md](M5_Hyperparameter_Tuning_Report.md) |
-| M6–M8 | Comparison viz, impact track, final docs | Pending |
+| **M6** | Comparative visualizations | Done — see [M6_Comparative_Analysis_Report.md](M6_Comparative_Analysis_Report.md) |
+| M7–M8 | Impact track / clustering, final demo pack | Pending |
 
 **Primary ML task (locked):** multiclass prediction of `oa_category`  
 (`fully_open` / `partially_open` / `closed`)
@@ -39,8 +40,8 @@ This folder packages the DA2 progress documentation for work completed through M
 | 2. Database connectivity | 2 | **Satisfied** (M1 + M2 `ml_features`) |
 | 3. 10–15 ML/DL algorithms | 3 | **Satisfied (M4)** — 14 models trained |
 | 4. Hyperparameter tuning | 1 | **Satisfied (M5)** |
-| 5. Comparative performance analysis | 1 | Partial (M4 leaderboard); full pack in M6 |
-| 6. Comparative visualizations | 1 | Partial (M3 + M4 plots); ROC/CM suite in M6 |
+| 5. Comparative performance analysis | 1 | **Satisfied (M4–M6)** |
+| 6. Comparative visualizations | 1 | **Satisfied (M6)** |
 | 7. Progress demo & documentation (75%) | 1 | **In progress** — DA2 pack documents M1–M4 |
 
 ---

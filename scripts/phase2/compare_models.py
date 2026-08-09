@@ -1,11 +1,14 @@
-"""Phase 2 — Comparative analysis of trained models (scaffold only).
+"""Phase 2 — Comparative analysis (delegates to M6 visualizations)."""
 
-Implementation deferred.
-"""
+from __future__ import annotations
+
+import runpy
+from pathlib import Path
 
 
 def main() -> None:
-    raise NotImplementedError("Phase 2 model comparison is not implemented yet.")
+    target = Path(__file__).with_name("06_comparative_visualizations.py")
+    runpy.run_path(str(target), run_name="__main__")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,43 @@
+# Phase 2 / M6 — Comparative visualizations
+# Consumes M4/M5 prediction CSVs + checkpoints; does not retrain.
+
+random_state: 42
+
+paths:
+  out_dir: evaluation/reports/m6
+  figures_dir: reports/figures/m6
+  m4_dir: evaluation/reports/m4
+  m5_dir: evaluation/reports/m5
+  m4_checkpoints: models/checkpoints/m4
+  m5_checkpoints: models/checkpoints/m5
+  x_test: data/ml/m3/oa_test.csv
+  y_test: data/ml/m3/oa_test_y.csv
+
+classes:
+  - fully_open
+  - partially_open
+  - closed
+
+# Models used for deep-dive plots (must have prediction CSVs with probabilities)
+focus_models:
+  m4:
+    - adaboost
+    - extra_trees
+    - gradient_boosting
+  m5:
+    - extra_trees_tuned
+    - adaboost_tuned
+    - logistic_regression_tuned
+    - random_forest_tuned
+    - gradient_boosting_tuned
+
+# Feature importance from these checkpoints (joblib)
+importance_models:
+  - name: adaboost_m4
+    path: models/checkpoints/m4/adaboost.joblib
+  - name: extra_trees_m5
+    path: models/checkpoints/m5/extra_trees_tuned.joblib
+  - name: random_forest_m5
+    path: models/checkpoints/m5/random_forest_tuned.joblib
+  - name: gradient_boosting_m5
+    path: models/checkpoints/m5/gradient_boosting_tuned.joblib
