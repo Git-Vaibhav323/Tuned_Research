@@ -9,6 +9,9 @@
 2. [M4_Model_Training_Report.md](M4_Model_Training_Report.md) — 14 models  
 3. [M5_Hyperparameter_Tuning_Report.md](M5_Hyperparameter_Tuning_Report.md) — tuning  
 4. [M6_Comparative_Analysis_Report.md](M6_Comparative_Analysis_Report.md) — ROC / PR / CM / importance  
+5. [M6_Final_QA.md](M6_Final_QA.md) — leakage check, winners, freeze confirmation  
+
+**M6 status:** frozen / ready for M7
 
 ## Detailed milestone reports
 
