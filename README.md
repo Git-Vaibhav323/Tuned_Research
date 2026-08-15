@@ -1,160 +1,173 @@
 # ResearchPilot
 
-**A Human-Centered Research Intelligence System**
+**A Human-Centered AI Research Assistant — Data Science Foundation (Phase 1 + Phase 2)**
 
-ResearchPilot helps researchers understand papers, choose statistical methods, improve abstracts, and find research gaps. The project is built as a complete data science workflow first, then extended with fine-tuning, RAG, and an interactive dashboard.
+ResearchPilot builds a reproducible pipeline over OpenAlex AI/ML scholarly metadata: collect and clean papers, store them in SQLite, engineer leakage-safe features, train and compare multiple ML models for open-access category prediction, tune strong models, and add secondary impact-tier prediction with exploratory topic clustering.
 
-> **Status:** Foundation scaffold  
-> No datasets, ML training, RAG, or dashboard runtime are implemented yet.
+> **Status:** Phase 1 complete · Phase 2 (M1–M7) complete and frozen · M8 documentation/demo pack complete  
+> Phase 3 (RAG / chat assistant / dashboard) is **roadmap only** — not implemented.
 
 ---
 
-## Development Phases
+## Problem
+
+Researchers need structured ways to explore large literature collections. Before conversational AI features, the project establishes trustworthy data, database access, and evaluated predictive models for:
+
+1. **Open-access category** (`fully_open` / `partially_open` / `closed`)  
+2. **Relative impact tier** (`low` / `medium` / `high`)  
+3. **Exploratory topic neighborhoods** (KMeans on TF-IDF)
+
+---
+
+## Dataset
+
+| Item | Value |
+|------|--------|
+| Source | OpenAlex API |
+| Final table | `data/final/final_dataset.csv` |
+| Size | **2000** papers × **27** columns |
+| Domain | AI / ML focused corpus |
+
+---
+
+## Phase 1 — Data Foundation
+
+OpenAlex → raw CSV → preprocessing → feature extraction → feature engineering → Python/R EDA → locked `final_dataset.csv`.
+
+Scripts: `scripts/phase1/` · R: `r/scripts/` · Figures: `reports/figures/01_*.png` …
+
+---
+
+## Phase 2 — Intelligence Layer
+
+| Milestone | Focus |
+|-----------|--------|
+| M1 | SQLite load + SQL retrieval |
+| M2 | Splits, TF-IDF, impact_tier labels |
+| M3 | Feature selection + scaling |
+| M4 | 14 ML algorithms (OA task) |
+| M5 | Hyperparameter tuning (5 models) |
+| M6 | Comparative metrics + visualizations |
+| M7 | Impact-tier (12 models) + clustering |
+| M8 | Integration, docs, demo, viva pack |
+
+---
+
+## Architecture
+
+See `reports/figures/final/researchpilot_final_architecture.png` and `DA2/ResearchPilot_DA2_Final_Report.md`.
 
 ```text
-Phase 1 → Dataset Collection → Preprocessing → EDA → Documentation
-                ↓
-Phase 2 → Machine Learning → Comparative Analysis
-                ↓
-Phase 3 → Fine-tuning → RAG → Dashboard
+OpenAlex → Dataset → Features → SQLite → Selection → M4 → M5 → M6
+                                              ├─ OA Classification
+                                              └─ Impact Tier → Clustering → Insights
 ```
 
-| Phase | Focus | Key outputs |
-|-------|--------|-------------|
-| **1** | Dataset collection, preprocessing, EDA, documentation | `data/processed/`, notebooks, reports, docs |
-| **2** | Machine learning and comparative analysis | trained models, metrics, comparison figures |
-| **3** | Fine-tuning, RAG, dashboard | adapters/checkpoints, vector index, UI |
+---
 
-Phase 3 does **not** replace Phase 1 or Phase 2. AI features consume validated data and evaluated models.
+## Database
+
+- Engine: **SQLite** (`database/researchpilot.db`, local / gitignored)  
+- Schemas: `database/schemas/`  
+- Demo: `python scripts/phase2/08_da2_database_demo.py`
 
 ---
 
-## Core Features (Final Product)
+## ML models (verified)
 
-| Module | Purpose |
-|--------|---------|
-| Adaptive Research Translator | Simplify academic text; key takeaways; examples |
-| Statistical Advisor | Recommend tests; rationale; assumptions; alternatives |
-| Abstract Improver | Grammar, tone, clarity, novelty framing |
-| Research Gap Finder | Compare papers; limitations; future work; gap ideas |
+### Open-access (M4/M6)
+
+| Leader | Model | Metric |
+|--------|-------|--------|
+| Best Accuracy / Macro-F1 | **m4_adaboost** | Acc **0.482** · F1 **0.452** |
+| Best ROC-AUC | **m5_extra_trees_tuned** | **0.628** |
+
+14 distinct algorithms in M4 (Dummy through MLP, including XGBoost/LightGBM).
+
+### Impact-tier (M7, frozen)
+
+| Item | Value |
+|------|--------|
+| Champion | **AdaBoost** |
+| Val / Test macro-F1 | **0.600** / **0.543** |
+| Test Acc / ROC-AUC | **0.551** / **0.680** |
+| Models | **12/12** successful |
+
+### Clustering
+
+Best **k=8**, silhouette **0.064** (exploratory; substantial overlap).
 
 ---
 
-## Folder Structure
+## How to run (high level)
+
+```powershell
+cd E:\Tuned_Research
+pip install -r requirements.txt   # then ensure Phase 2 packages installed
+
+# Phase 1 (if rebuilding dataset)
+python scripts/phase1/collect_openalex.py
+python scripts/phase1/preprocess_papers.py
+python scripts/phase1/feature_extraction.py
+python scripts/phase1/feature_engineering.py
+
+# Phase 2
+python scripts/phase2/01_load_to_db.py
+python scripts/phase2/02_build_ml_features.py
+python scripts/phase2/03_feature_selection.py
+python scripts/phase2/04_train_models.py
+python scripts/phase2/05_tune_hyperparameters.py
+python scripts/phase2/06_comparative_visualizations.py
+python scripts/phase2/07_impact_and_clustering.py
+python scripts/phase2/08_da2_database_demo.py
+```
+
+Full detail: [`DA2/REPRODUCIBILITY.md`](DA2/REPRODUCIBILITY.md).  
+**Do not retrain** solely for documentation; M4–M7 metrics are frozen unless a deliberate rebuild is needed.
+
+OpenAlex requests may need an email/polite pool key via environment variables — never commit secrets (see `.env.example` if present; keep real keys out of git).
+
+---
+
+## Folder structure (essentials)
 
 ```text
 Tuned_Research/
-├── data/
-│   ├── raw/                  # Immutable structured source data
-│   ├── raw_papers/           # Source PDFs / documents
-│   ├── external/             # Third-party reference datasets
-│   ├── interim/              # Intermediate transforms
-│   ├── processed/            # Analysis-ready datasets
-│   ├── instruction_dataset/  # Phase 3 instruction pairs
-│   ├── benchmark/            # Held-out evaluation sets
-│   └── metadata/             # Data dictionary, licenses, provenance
-├── notebooks/
-│   ├── phase1_eda/
-│   ├── phase2_ml/
-│   └── phase3_llm/
-├── scripts/
-│   ├── phase1/
-│   ├── phase2/
-│   └── phase3/
-├── configs/
-│   ├── phase1/
-│   ├── phase2/
-│   └── phase3/
-├── src/researchpilot/
-│   ├── data/                 # Phase 1 data utilities
-│   ├── features/             # Phase 2 feature engineering
-│   ├── models/               # Phase 2 ML/DL workflows
-│   ├── visualization/        # Plotting helpers
-│   ├── rag/                  # Phase 3 retrieval
-│   └── assistant/            # Phase 3 research modules
-├── database/                 # Optional SQL schemas / queries
-├── r/                        # Optional R visualizations
-├── models/                   # Checkpoints, adapters, exports
-├── evaluation/               # Metrics and reports
-├── reports/                  # Figures and tables for write-ups
-├── backend/                  # Phase 3 API scaffold
-├── frontend/                 # Phase 3 dashboard scaffold
-├── docs/                     # Architecture and phase plans
-├── tests/
-├── README.md
-└── requirements.txt
+├── data/final/              # Phase 1 locked CSV
+├── data/ml/                 # Phase 2 matrices
+├── database/                # schemas, queries, local .db
+├── scripts/phase1|phase2/   # pipelines
+├── src/researchpilot/       # library code
+├── configs/                 # YAML configs
+├── evaluation/reports/      # local metrics (gitignored)
+├── models/checkpoints/      # local joblibs (gitignored)
+├── reports/                 # figures + reports
+├── DA2/                     # faculty documentation pack
+├── r/                       # R EDA
+└── docs/                    # architecture notes
 ```
 
 ---
 
-## Planned Architecture
+## Limitations
 
-```text
-Phase 1
-Sources → Collection → Cleaning → Preprocessing → EDA → Documentation
-
-Phase 2
-Processed Data → Features → ML Models → Metrics → Comparative Analysis
-
-Phase 3
-Fine-tuned Model + RAG Index → Research Assistant → Dashboard
-```
-
-Phase 3 user flow (product):
-
-```text
-User → Upload / Question → Document Processing → Chunking
-    → Retrieval → Fine-Tuned LLM → Answer + Sources + Confidence
-```
-
-Details: [docs/architecture.md](docs/architecture.md), [docs/project_architecture.md](docs/project_architecture.md)
+Moderate OA predictability; relative impact tiers; weak cluster separation; 2k-paper AI/ML sample; TF-IDF (not deep semantics); no chat/RAG yet.
 
 ---
 
-## Technology Stack
+## Future roadmap
 
-| Phase | Technologies |
-|-------|----------------|
-| **1** | `pandas`, `numpy`, `scipy`, `matplotlib`, `seaborn`, `plotly`, `jupyter`, `pymupdf` |
-| **2** | `scikit-learn`, `xgboost`, `lightgbm`, `torch`, SQLAlchemy |
-| **3** | `transformers`, `peft`, `trl`, `sentence-transformers`, `chromadb`, `langchain`, `fastapi`, `streamlit` |
-
-See [`requirements.txt`](requirements.txt). Packages are listed only—not installed.
+Embeddings, RAG, summarization, similar-paper UI, gap analysis, conversational assistant — **not implemented** in this repository state.
 
 ---
 
-## Documentation
+## Documentation pack
 
-| Document | Description |
-|----------|-------------|
-| [docs/architecture.md](docs/architecture.md) | System architecture |
-| [docs/project_architecture.md](docs/project_architecture.md) | Flow diagrams |
-| [docs/dataset_plan.md](docs/dataset_plan.md) | Phase 1 dataset plan |
-| [docs/development_roadmap.md](docs/development_roadmap.md) | Phase 1–3 roadmap |
-| [docs/project_scope.md](docs/project_scope.md) | Scope and boundaries |
-| [docs/benchmark_plan.md](docs/benchmark_plan.md) | Evaluation plan |
-
----
-
-## Getting Started (later)
-
-1. Clone the repository  
-2. Create a virtual environment  
-3. Install dependencies from `requirements.txt` when a phase starts  
-4. Follow the active phase plan under `docs/development_roadmap.md`  
-
-Foundation work does not require installing packages yet.
-
----
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md). Keep work aligned with the active phase.
-
-## License
-
-[MIT License](LICENSE)
-
-## Changelog
-
-See [CHANGELOG.md](CHANGELOG.md)
+| Doc | Path |
+|-----|------|
+| Final DA2 report | [`DA2/ResearchPilot_DA2_Final_Report.md`](DA2/ResearchPilot_DA2_Final_Report.md) |
+| Demo script | [`DA2/DA2_Demo_Script.md`](DA2/DA2_Demo_Script.md) |
+| Viva Q&A | [`DA2/DA2_Viva_QA.md`](DA2/DA2_Viva_QA.md) |
+| Checklist | [`DA2/DA2_FINAL_CHECKLIST.md`](DA2/DA2_FINAL_CHECKLIST.md) |
+| Reproducibility | [`DA2/REPRODUCIBILITY.md`](DA2/REPRODUCIBILITY.md) |
+| Cleanup (await approval) | [`DA2/M8_Cleanup_Recommendations.md`](DA2/M8_Cleanup_Recommendations.md) |

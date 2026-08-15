@@ -1,46 +1,40 @@
-# DA2 — ResearchPilot Phase 2 Documentation Pack
+# DA2 README
 
-**Status covered:** M1 · M2 · M3 · M4 · M5 · **M6** (complete)  
-**Next:** M7 (impact-tier track + clustering) / M8 (final demo pack)
+**Status:** M1–M7 complete and frozen · **M8 documentation/demo pack complete**
 
 ## Start here
 
-1. [DA2_Progress_Report_M1_M2_M3.md](DA2_Progress_Report_M1_M2_M3.md) — foundation  
-2. [M4_Model_Training_Report.md](M4_Model_Training_Report.md) — 14 models  
-3. [M5_Hyperparameter_Tuning_Report.md](M5_Hyperparameter_Tuning_Report.md) — tuning  
-4. [M6_Comparative_Analysis_Report.md](M6_Comparative_Analysis_Report.md) — ROC / PR / CM / importance  
-5. [M6_Final_QA.md](M6_Final_QA.md) — leakage check, winners, freeze confirmation  
+1. [ResearchPilot_DA2_Final_Report.md](ResearchPilot_DA2_Final_Report.md) — consolidated DA2 report  
+2. [DA2_FINAL_CHECKLIST.md](DA2_FINAL_CHECKLIST.md) — marks ↔ evidence  
+3. [DA2_Demo_Script.md](DA2_Demo_Script.md) — 7–10 min live demo  
+4. [DA2_Viva_QA.md](DA2_Viva_QA.md) — ≥40 viva questions  
+5. [REPRODUCIBILITY.md](REPRODUCIBILITY.md) — exact commands  
+6. [DA2_Model_Inventory.md](DA2_Model_Inventory.md) — algorithms + metrics  
+7. [M8_Cleanup_Recommendations.md](M8_Cleanup_Recommendations.md) — no deletes until approved  
 
-**M6 status:** frozen / ready for M7
-
-## Detailed milestone reports
+## Milestone reports
 
 | Milestone | Report |
 |-----------|--------|
-| M1 Database connectivity | [M1_Database_Connectivity_Report.md](M1_Database_Connectivity_Report.md) |
-| M2 Feature engineering | [M2_Feature_Engineering_Report.md](M2_Feature_Engineering_Report.md) |
-| M3 Feature selection | [M3_Feature_Selection_Report.md](M3_Feature_Selection_Report.md) |
-| M4 Model training | [M4_Model_Training_Report.md](M4_Model_Training_Report.md) |
-| M5 Hyperparameter tuning | [M5_Hyperparameter_Tuning_Report.md](M5_Hyperparameter_Tuning_Report.md) |
-| M6 Comparative visualizations | [M6_Comparative_Analysis_Report.md](M6_Comparative_Analysis_Report.md) |
+| Audit | [M8_Repository_Audit.md](M8_Repository_Audit.md) |
+| M1 | [M1_Database_Connectivity_Report.md](M1_Database_Connectivity_Report.md) |
+| M2 | [M2_Feature_Engineering_Report.md](M2_Feature_Engineering_Report.md) |
+| M3 | [M3_Feature_Selection_Report.md](M3_Feature_Selection_Report.md) |
+| M4 | [M4_Model_Training_Report.md](M4_Model_Training_Report.md) |
+| M5 | [M5_Hyperparameter_Tuning_Report.md](M5_Hyperparameter_Tuning_Report.md) |
+| M6 | [M6_Comparative_Analysis_Report.md](M6_Comparative_Analysis_Report.md) |
+| M7 | [M7_Impact_and_Clustering_Report.md](M7_Impact_and_Clustering_Report.md) |
 
-## Key figures (M6)
+## Frozen leaders (do not invent)
 
-Folder: [figures/m6/](figures/m6/)
+- OA Acc/F1: **m4_adaboost** 0.482 / 0.452  
+- OA ROC-AUC: **m5_extra_trees_tuned** 0.628  
+- Impact: AdaBoost test F1 **0.543**, Acc **0.551**, ROC **0.680**  
+- Clusters: k=8, silhouette **0.064**
 
-- `cm_grid_comparative.png` — confusion matrices  
-- `roc_auc_comparison.png` / `roc_ovr_*.png` — ROC  
-- `pr_ap_comparison.png` / `pr_*.png` — Precision–Recall  
-- `metrics_grouped_bars.png` — metric overview  
-- `feature_importance_*.png` — importances  
-
-Also: [m6_comparative_metrics.md](m6_comparative_metrics.md)
-
-## Quick rebuild commands
+## Live demo commands
 
 ```powershell
-cd E:\Tuned_Research
-python scripts/phase2/04_train_models.py
-python scripts/phase2/05_tune_hyperparameters.py
-python scripts/phase2/06_comparative_visualizations.py
+python scripts/phase2/08_da2_database_demo.py
+python scripts/phase2/08_generate_architecture_diagram.py
 ```

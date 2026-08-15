@@ -93,6 +93,10 @@ def build_model(name: str, random_state: int = 42) -> Any:
         )
 
     if key == "xgboost":
+        import os
+
+        # Force CPU on Windows / mixed CUDA installs (avoids cudaGetLastError OOM).
+        os.environ.setdefault("CUDA_VISIBLE_DEVICES", "-1")
         from xgboost import XGBClassifier
 
         return XGBClassifier(
@@ -103,9 +107,10 @@ def build_model(name: str, random_state: int = 42) -> Any:
             colsample_bytree=0.9,
             objective="multi:softprob",
             eval_metric="mlogloss",
-            n_jobs=-1,
+            n_jobs=1,
             random_state=random_state,
             tree_method="hist",
+            device="cpu",
         )
 
     if key == "lightgbm":

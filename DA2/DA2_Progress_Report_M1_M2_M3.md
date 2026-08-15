@@ -20,7 +20,8 @@ Phase 2 continues directly from the Phase 1 OpenAlex corpus (`data/final/final_d
 | **M4** | Train 10–15 ML algorithms (OA category) | Done — see [M4_Model_Training_Report.md](M4_Model_Training_Report.md) |
 | **M5** | Hyperparameter tuning | Done — see [M5_Hyperparameter_Tuning_Report.md](M5_Hyperparameter_Tuning_Report.md) |
 | **M6** | Comparative visualizations | Done — see [M6_Comparative_Analysis_Report.md](M6_Comparative_Analysis_Report.md) |
-| M7–M8 | Impact track / clustering, final demo pack | Pending |
+| **M7** | Impact-tier + clustering | Done — see [M7_Impact_Clustering_Report.md](M7_Impact_Clustering_Report.md) |
+| M8 | Final demo pack / 75% docs | Pending |
 
 **Primary ML task (locked):** multiclass prediction of `oa_category`  
 (`fully_open` / `partially_open` / `closed`)
