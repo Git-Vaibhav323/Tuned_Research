@@ -1,0 +1,15 @@
+model,split,acc,prec,rec,f1,roc,model_type,cv_f1,best_params,rank
+mlp,test,0.412,0.3792,0.3794,0.3783,0.5429,baseline,NA,default,1
+logistic_regression,test,0.4452,0.3875,0.3764,0.3345,0.5708,baseline,NA,default,2
+lda,test,0.4419,0.3565,0.3718,0.3257,0.5714,baseline,NA,default,3
+random_forest_tuned,test,0.3754,NA,NA,0.3251,NA,tuned,0.3726,"ntree=500,mtry=4",4
+gradient_boosting,test,0.3721,0.3407,0.3312,0.3233,0.5299,baseline,NA,default,5
+decision_tree,test,0.3787,0.3257,0.3323,0.3194,0.5273,baseline,NA,default,6
+random_forest,test,0.3654,0.3306,0.3262,0.3187,0.504,baseline,NA,default,7
+xgboost_tuned,test,0.3189,NA,NA,0.3159,NA,tuned,NA,"depth=3,eta=0.1,nr=100",8
+xgboost,test,0.2924,0.2957,0.3015,0.2909,0.4999,baseline,NA,default,9
+elastic_net,test,0.4452,0.2937,0.3648,0.284,0.5582,baseline,NA,default,10
+svm_linear,test,0.4219,0.2885,0.3453,0.2661,0.54990000000000006,baseline,NA,default,11
+svm_tuned,test,0.4086,NA,NA,0.251,NA,tuned,0.2847,"cost=1,gamma=0.1",12
+svm_rbf,test,0.4086,0.3418,0.3338,0.2439,0.5357,baseline,NA,default,13
+naive_bayes,test,0.392,0.259,0.319,0.2342,0.5396,baseline,NA,default,14

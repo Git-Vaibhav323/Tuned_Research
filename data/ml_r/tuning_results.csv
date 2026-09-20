@@ -1,0 +1,7 @@
+model,split,best_params,cv_f1_macro,accuracy,f1_macro
+random_forest_tuned,val,"ntree=500,mtry=4",0.3726,0.408,0.3553
+random_forest_tuned,test,"ntree=500,mtry=4",0.3726,0.3754,0.3251
+xgboost_tuned,val,"depth=3,eta=0.1,nr=100",NA,0.3378,0.3312
+xgboost_tuned,test,"depth=3,eta=0.1,nr=100",NA,0.3189,0.3159
+svm_tuned,val,"cost=1,gamma=0.1",0.2847,0.4348,0.2754
+svm_tuned,test,"cost=1,gamma=0.1",0.2847,0.4086,0.251

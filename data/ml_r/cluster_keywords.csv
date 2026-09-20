@@ -1,0 +1,4 @@
+cluster,n_papers,pct_papers,top_terms
+1,200,10,educ; chatgpt; student; generat; technolog; intellig; artifici; languag; tool; learn
+2,1422,71.1,model; learn; data; predict; system; machin; robot; review; research; control
+3,378,18.9,imag; detect; segment; featur; medic; network; deep; dataset; convolut; diseas
