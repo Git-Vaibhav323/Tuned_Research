@@ -1,10 +1,11 @@
 model,split,accuracy,f1_macro,roc_auc,model_label
 naive_bayes,test,0.59,0.5688,0.7434,naive bayes
-svm_rbf,test,0.56,0.5336,0.7137,svm rbf
+adaboost,test,0.57,0.5473,0.7291,adaboost
+svm_rbf,test,0.56,0.5336,0.7142,svm rbf
 gradient_boosting,test,0.5367,0.5269,0.7015,gradient boosting
 lda,test,0.55,0.5246,0.7004,lda
 random_forest,test,0.5333,0.5187,0.7054,random forest
 decision_tree,test,0.5433,0.5096,0.7023,decision tree
-mlp,test,0.4333,0.4339,0.6247,mlp
+mlp,test,0.3767,0.3785,0.5756,mlp
 xgboost,test,0.3433,0.343,0.4712,xgboost
 logistic_regression,test,0.3433,0.1704,0.5021,logistic regression

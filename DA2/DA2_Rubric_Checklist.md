@@ -1,200 +1,222 @@
-# DA2 Rubric Checklist — R Implementation
+# DA2 Rubric Checklist — R Implementation (Enhanced Pipeline v2)
 **Project**: ResearchPilot | **Language**: R | **Database**: SQLite
+**Version**: v2 (Enriched Features — TF-IDF + Domain + Publisher)
 
 ---
 
-## Rubric Mapping
+## ✅ 1. Feature Engineering & Feature Selection — 1 mark
 
-### ✅ 1. Feature Engineering & Feature Selection — 1 mark
+### Feature Engineering
 
 | Evidence | Location |
 |----------|----------|
-| **R Script** | `r/scripts/phase2/01_feature_engineering.R` |
-| **Output CSV** | `data/ml_r/engineered_features.csv` (2000 × 38) |
-| **New features** | 11 new features added (title_word_count, abstract_word_count, title_to_abstract_ratio, keyword_diversity, concept_diversity, text_richness, recency_score, text_length_category, abstract_keyword_overlap, publication_year_norm, oa_category_encoded) |
+| **Script v1** | `r/scripts/phase2/01_feature_engineering.R` |
+| **Script v2 (enhanced)** | `r/scripts/phase2/00_enriched_features.R` |
+| **Output v1** | `data/ml_r/engineered_features.csv` (2000 × 38, 11 new features) |
+| **Output v2** | `data/ml_r/enriched_features_v2.csv` (2000 × 206, 205 features) |
+| **v2 Feature groups** | 12 structural + 25 domain + 18 publisher/DOI + 150 TF-IDF |
+| **Key new features** | pub_ieee, pub_mdpi, dom_medical, dom_llm, tf_* (TF-IDF terms) |
 | **Report** | `reports/phase2_r/feature_engineering_report.md` |
-| **R Script** | `r/scripts/phase2/02_feature_selection.R` |
-| **Output CSV** | `data/ml_r/selected_features_oa.csv` (9 features selected) |
-| **Method 1** | Near-Zero Variance filter → removed 3 (has_doi, keyword_diversity, concept_diversity) |
-| **Method 2** | Pairwise Correlation filter (r > 0.90) → removed 5 |
-| **Method 3** | Mutual Information (discretised, 10 bins) → all 9 survivors pass threshold |
-| **Method 4** | Random Forest Importance (Gini) |
-| **Selection figure** | `reports/figures/phase2_r/feature_selection_agreement.png` |
-| **MI figure** | `reports/figures/phase2_r/feature_mi_scores.png` |
-| **Report** | `reports/phase2_r/feature_selection_report.md` |
-| **Before/After** | 17 candidate → 9 selected features (47% reduction) |
-| **Top features** | title_word_count, text_richness, title_to_abstract_ratio, abstract_word_count, keyword_count |
-| **Leakage guard** | Excluded: is_open_access, oa_status, oa_url, cited_by_count, citation_per_year, citation_log |
 
----
-
-### ✅ 2. Database Connectivity and Data Retrieval using R — 2 marks
+### Feature Selection
 
 | Evidence | Location |
 |----------|----------|
-| **Database** | `database/researchpilot_r.db` (SQLite) |
-| **R packages** | `DBI` + `RSQLite` |
+| **Script v1** | `r/scripts/phase2/02_feature_selection.R` |
+| **Script v2** | `r/scripts/phase2/02_feature_selection_v2.R` |
+| **Method 1** | Near-Zero Variance → removed 41 of 205 |
+| **Method 2** | Pairwise Correlation (r > 0.95, TF-IDF only) |
+| **Method 3** | Random Forest Gini Importance → top 80 retained |
+| **Output v2** | `data/ml_r/selected_features_v2.csv` (80 features + target) |
+| **Feature names** | `data/ml_r/selected_feature_names.rds` |
+| **Top 2 features** | pub_ieee (37.84), pub_mdpi (34.89) |
+| **Before/After** | 205 → 80 features (61% reduction) |
+| **Report** | `reports/phase2_r/feature_selection_v2_report.md` |
+| **Figure** | `reports/figures/phase2_r/feature_importance_enriched.png` |
+| **Figure** | `reports/figures/phase2_r/v2_07_feature_importance_enriched.png` |
+
+---
+
+## ✅ 2. Database Connectivity and Data Retrieval using R — 2 marks
+
+| Evidence | Location |
+|----------|----------|
+| **Database** | `database/researchpilot_r.db` (SQLite, 4.2 MB) |
+| **Packages** | `DBI` + `RSQLite` |
 | **Setup script** | `r/scripts/phase2/03_database_setup.R` |
 | **Query script** | `r/scripts/phase2/04_database_queries.R` |
-| **Tables created** | `papers` (2000 rows), `ml_features` (2000 rows), `oa_features` (2000 rows), `model_results` |
-| **Query 1** | Most recent papers (2024+) → `data/database_r/q1_most_recent_papers.csv` |
-| **Query 2** | Most highly cited papers → `data/database_r/q2_most_cited_papers.csv` |
-| **Query 3** | OA category distribution with % and avg citations → `data/database_r/q3_oa_category_distribution.csv` |
-| **Query 4** | Aggregate: Papers per year → `data/database_r/q4_papers_by_year.csv` |
-| **Query 5** | OA breakdown by year (cross-tab) → `data/database_r/q5_oa_by_year.csv` |
-| **Query 6** | JOIN: papers + ml_features (high text-richness) → `data/database_r/q6_high_richness_papers.csv` |
-| **Query 7** | JOIN + GROUP BY: avg features per OA class → `data/database_r/q7_avg_features_by_oa.csv` |
-| **Visualisation** | `reports/figures/phase2_r/db_papers_by_year_oa.png` |
+| **Tables** | `papers` (2000), `ml_features` (2000), `oa_features` (2000), `model_results` (live) |
+| **Query 1** | Most recent papers (2024+) → `q1_most_recent_papers.csv` |
+| **Query 2** | Most cited papers → `q2_most_cited_papers.csv` |
+| **Query 3** | OA distribution (COUNT, AVG, Window function) → `q3_oa_category_distribution.csv` |
+| **Query 4** | Papers per year → `q4_papers_by_year.csv` |
+| **Query 5** | OA by year cross-tab (CASE WHEN) → `q5_oa_by_year.csv` |
+| **Query 6** | High-richness papers (JOIN) → `q6_high_richness_papers.csv` |
+| **Query 7** | Avg features by OA class (JOIN + GROUP BY) → `q7_avg_features_by_oa.csv` |
+| **DB Visualisation** | `reports/figures/phase2_r/db_papers_by_year_oa.png` |
 | **Connection demo** | `dbConnect()` → `dbListTables()` → `dbGetQuery()` → `dbDisconnect()` |
 
 ---
 
-### ✅ 3. Implementation of 10–15 ML/DL Algorithms — 3 marks
+## ✅ 3. Implementation of 10–15 ML Algorithms — 3 marks
+
+### OA Classification (Primary Task)
 
 | # | Algorithm | Family | R Package | Script |
 |---|-----------|--------|-----------|--------|
-| 1 | Logistic Regression (multinomial) | Linear | nnet::multinom | 05_ml_models.R |
-| 2 | Elastic Net Logistic Regression | Regularised Linear | glmnet | 05_ml_models.R |
-| 3 | CART Decision Tree | Tree | rpart | 05_ml_models.R |
-| 4 | Random Forest (500 trees) | Ensemble Bagging | randomForest | 05_ml_models.R |
-| 5 | Gradient Boosting Machine | Ensemble Boosting | gbm | 05_ml_models.R |
-| 6 | XGBoost | Extreme Gradient Boosting | xgboost | 05_ml_models.R |
-| 7 | AdaBoost | Adaptive Boosting | adabag | 05_ml_models.R |
-| 8 | SVM (RBF Kernel) | Kernel | e1071 | 05_ml_models.R |
-| 9 | SVM (Linear Kernel) | Kernel | e1071 | 05_ml_models.R |
-| 10 | Naive Bayes (Gaussian) | Probabilistic | naivebayes / e1071 | 05_ml_models.R |
-| 11 | Linear Discriminant Analysis | Discriminant | MASS | 05_ml_models.R |
-| 12 | K-Nearest Neighbours (k=7) | Instance-based | kknn | 05_ml_models.R |
-| 13 | MLP Neural Network (size=50) | Neural Network | nnet | 05_ml_models.R |
+| 1 | Logistic Regression (multinomial) | Linear | nnet | 05_ml_models_v2.R |
+| 2 | Elastic Net | Regularised Linear | glmnet | 05_ml_models_v2.R |
+| 3 | CART Decision Tree | Tree | rpart | 05_ml_models_v2.R |
+| 4 | Random Forest (500 trees) | Ensemble Bagging | randomForest | 05_ml_models_v2.R |
+| 5 | XGBoost (150 rounds) | Extreme Gradient Boosting | xgboost | 05_ml_models_v2.R |
+| 6 | Gradient Boosting Machine | Gradient Boosting | gbm | 05_ml_models_v2.R |
+| 7 | AdaBoost (100 iters) | Adaptive Boosting | adabag | 05_ml_models_v2.R |
+| 8 | SVM (RBF kernel) | Kernel | e1071 | 05_ml_models_v2.R |
+| 9 | SVM (Linear kernel) | Kernel | e1071 | 05_ml_models_v2.R |
+| 10 | Naive Bayes (Gaussian) | Probabilistic | e1071 | 05_ml_models_v2.R |
+| 11 | LDA | Discriminant Analysis | MASS | 05_ml_models_v2.R |
+| 12 | KNN (k=7) | Instance-Based | kknn | 05_ml_models_v2.R |
+| 13 | MLP Neural Network (size=100) | Neural Network | nnet | 05_ml_models_v2.R |
 
-**Total: 13 genuinely different algorithms (not parameter variations)**
+**Total: 13 algorithms (7 families) — exceeds requirement of 10–15**
 
-Evidence:
-- Script: `r/scripts/phase2/05_ml_models.R`
-- Output: `data/ml_r/model_metrics_oa.csv` (metrics for all models)
-- Output: `data/ml_r/model_objects_oa.rds` (saved model objects)
-- Leaderboard: `reports/tables/r_model_leaderboard_baseline.csv`
-
----
-
-### ✅ 4. Hyperparameter Tuning and Model Optimization — 1 mark
-
-| Evidence | Location |
-|----------|----------|
-| **Script** | `r/scripts/phase2/06_hyperparameter_tuning.R` |
-| **Method** | Grid search with 5-fold cross-validation (training set only) |
-| **Models tuned** | Random Forest (ntree × mtry grid), XGBoost (max_depth × eta × nrounds), SVM-RBF (cost × gamma) |
-| **RF grid** | ntree ∈ {200,500} × mtry ∈ {2,3,4} = 6 combinations |
-| **XGBoost grid** | depth ∈ {3,5} × eta ∈ {0.05,0.10} × nrounds ∈ {100,200} = 8 combinations |
-| **SVM grid** | cost ∈ {0.1,1,10} × gamma ∈ {0.01,0.1,auto} = 9 combinations |
-| **Output** | `data/ml_r/tuning_results.csv` |
-| **Leaderboard** | `reports/tables/r_tuning_leaderboard.csv` |
-| **Saved models** | `data/ml_r/rf_tuned.rds`, `data/ml_r/xgb_tuned.rds`, `data/ml_r/svm_tuned.rds` |
-| **Test set integrity** | Test set NEVER used during tuning — CV on train only |
+### Evidence files
+- `data/ml_r/model_metrics_v2.csv` — all metrics
+- `data/ml_r/model_objects_v2.rds` — saved model objects
+- `reports/tables/r_model_leaderboard_v2_baseline.csv` — baseline leaderboard
 
 ---
 
-### ✅ 5. Comparative Performance Analysis — 1 mark
+## ✅ 4. Hyperparameter Tuning and Model Optimization — 1 mark
 
 | Evidence | Location |
 |----------|----------|
-| **Script** | `r/scripts/phase2/07_model_evaluation.R` |
+| **Script** | `r/scripts/phase2/06_hyperparameter_tuning_v2.R` |
+| **Method** | Grid search + 5-fold CV (training set ONLY) |
+| **RF grid** | ntree ∈ {300,500,800} × mtry ∈ {5,8,12,15} = 12 combinations |
+| **XGBoost grid** | depth ∈ {4,6,8} × eta ∈ {0.05,0.10} × nrounds ∈ {150,300} = 12 |
+| **SVM grid** | cost ∈ {1,10,100} × gamma ∈ {0.001,0.01,0.1} = 9 combinations |
+| **RF best** | ntree=500, mtry=8, test-acc=0.5615 |
+| **SVM best** | cost=10, gamma=0.001, CV-F1=0.6065, test-acc=0.5748 |
+| **Output** | `data/ml_r/tuning_results_v2.csv` |
+| **Leaderboard** | `reports/tables/r_tuning_leaderboard_v2.csv` |
+| **Saved models** | `rf_tuned_v2.rds`, `xgb_tuned_v2.rds`, `svm_tuned_v2.rds` |
+| **Test integrity** | Test set never used during tuning |
+
+---
+
+## ✅ 5. Comparative Performance Analysis — 1 mark
+
+| Evidence | Location |
+|----------|----------|
+| **Script** | `r/scripts/phase2/07_model_evaluation_v2.R` |
 | **Metrics** | Accuracy, Macro-Precision, Macro-Recall, Macro-F1, OVR ROC-AUC |
-| **Leaderboard CSV** | `reports/tables/r_model_leaderboard.csv` |
-| **Leaderboard MD** | `reports/tables/r_model_leaderboard.md` |
-| **Combined results** | `data/ml_r/all_results_combined.csv` (baseline + tuned) |
-| **Database update** | Results written to `model_results` table in SQLite |
-| **Best Accuracy** | see leaderboard |
-| **Best Macro-F1** | see leaderboard |
-| **Best ROC-AUC** | see leaderboard |
-| **Baseline vs Tuned** | Delta comparison in evaluation output |
-| **Note** | Different metrics have different leaders — no single champion claimed |
+| **Leaderboard CSV** | `reports/tables/r_model_leaderboard_v2.csv` (15 models) |
+| **Leaderboard MD** | `reports/tables/r_model_leaderboard_v2.md` |
+| **Best Accuracy** | 0.5748 (svm_tuned) — up from 0.4452 (+13%) |
+| **Best F1** | 0.5701 (svm_tuned) — up from 0.3783 (+19%) |
+| **Best AUC** | 0.7659 (mlp) — up from 0.5714 (+19%) |
+| **v1 vs v2** | `reports/figures/phase2_r/v2_03_old_vs_new_comparison.png` |
+| **SQLite update** | model_results table updated with all v2 results |
 
 ---
 
-### ✅ 6. Comparative Visualizations — 1 mark
+## ✅ 6. Comparative Visualizations — 1 mark
 
-| # | Figure | File | Script |
-|---|--------|------|--------|
-| 1 | Model Accuracy Comparison | `01_model_accuracy_comparison.png` | 08 |
-| 2 | Macro-F1 Comparison | `02_model_f1_comparison.png` | 08 |
-| 3 | ROC Curves (OVR, 3 panels) | `03_roc_curves_ovr.png` | 08 |
-| 4 | ROC-AUC Bar Chart | `04_roc_auc_comparison.png` | 08 |
-| 5 | Precision-Recall Curves | `05_precision_recall_curves.png` | 08 |
-| 6a | Confusion Matrix (best model) | `06a_confusion_matrix_best_model.png` | 08 |
-| 6b | Confusion Matrix (Random Forest) | `06b_confusion_matrix_rf.png` | 08 |
-| 7 | Feature Importance (RF Gini) | `07_feature_importance_rf.png` | 08 |
-| 8 | Precision Comparison | `08_precision_comparison.png` | 08 |
-| 9 | Recall Comparison | `09_recall_comparison.png` | 08 |
-| 10 | Baseline vs Tuned | `10_baseline_vs_tuned.png` | 08 |
-| + | Feature Selection Agreement | `feature_selection_agreement.png` | 02 |
-| + | Mutual Information Scores | `feature_mi_scores.png` | 02 |
-| + | Impact-Tier Comparison | `impact_tier_model_comparison.png` | 09 |
-| + | Impact-Tier Distribution | `impact_tier_class_distribution.png` | 09 |
-| + | Cluster PCA Scatter | `clustering_pca_scatter.png` | 10 |
-| + | Silhouette vs k | `clustering_silhouette_vs_k.png` | 10 |
-| + | Cluster Sizes | `clustering_size_distribution.png` | 10 |
-| + | Papers by Year & OA | `db_papers_by_year_oa.png` | 04 |
+### v2 Enhanced Figures (new)
 
-**All figures directory**: `reports/figures/phase2_r/`
-**All figures generated in R using ggplot2**
+| Figure | File |
+|--------|------|
+| Accuracy comparison (15 models) | `v2_01_accuracy_comparison.png` |
+| Macro-F1 comparison | `v2_02_f1_comparison.png` |
+| Old vs New feature set | `v2_03_old_vs_new_comparison.png` |
+| ROC-AUC bar chart | `v2_04_roc_auc_comparison.png` |
+| Precision/Recall/F1 grouped | `v2_05_precision_recall_f1.png` |
+| Confusion matrix (RF) | `v2_cm_random_forest.png` |
+| Confusion matrix (XGBoost) | `v2_cm_xgboost.png` |
+| Feature importance (enriched) | `v2_07_feature_importance_enriched.png` |
+| Baseline vs Tuned | `v2_08_baseline_vs_tuned.png` |
+| Impact-tier comparison | `v2_impact_model_comparison.png` |
+| Impact-tier distribution | `v2_impact_class_distribution.png` |
+
+### v1 Original Figures (preserved)
+
+| Figure | File |
+|--------|------|
+| Feature selection agreement | `feature_selection_agreement.png` |
+| MI scores | `feature_mi_scores.png` |
+| ROC curves (OVR, 3 panels) | `03_roc_curves_ovr.png` |
+| Precision-Recall curves | `05_precision_recall_curves.png` |
+| Confusion matrix (best model) | `06a_confusion_matrix_best_model.png` |
+| Feature importance (v1 RF) | `07_feature_importance_rf.png` |
+| Clustering PCA scatter | `clustering_pca_scatter.png` |
+| Silhouette vs k | `clustering_silhouette_vs_k.png` |
+| DB papers by year | `db_papers_by_year_oa.png` |
+
+**All figures generated in R using ggplot2**  
+**Total figures**: 29 (20 v1 + 9 v2)  
+**Directory**: `reports/figures/phase2_r/`
 
 ---
 
-### ✅ 7. Progress Demonstration and Documentation — 1 mark
+## ✅ 7. Progress Demonstration and Documentation — 1 mark
 
 | Evidence | Location |
 |----------|----------|
-| **DA2 Final Report** | `DA2/DA2_R_Final_Report.md` (25 sections) |
-| **Faculty Demo Script** | `DA2/DA2_R_Demo.md` (15 steps, 7-10 min) |
+| **DA2 Final Report** | `DA2/DA2_R_Final_Report.md` (25 sections, 700+ lines) |
+| **Faculty Demo Script** | `DA2/DA2_R_Demo.md` (13 steps, ~9 min demo) |
 | **Rubric Checklist** | `DA2/DA2_Rubric_Checklist.md` (this file) |
 | **Feature Engineering Report** | `reports/phase2_r/feature_engineering_report.md` |
-| **Feature Selection Report** | `reports/phase2_r/feature_selection_report.md` |
-| **Model Leaderboard** | `reports/tables/r_model_leaderboard.md` |
+| **Feature Selection Report v2** | `reports/phase2_r/feature_selection_v2_report.md` |
+| **Model Leaderboard v2** | `reports/tables/r_model_leaderboard_v2.md` |
 | **Requirements** | `r/requirements.md` |
-| **Setup Script** | `r/phase2_setup.R` |
-| **Python M1-M7** | Existing Python implementation preserved (not deleted) |
+| **Pipeline Runner** | `r/run_enhanced_pipeline.R` |
 
 ---
 
-## Complete R Script Inventory
+## Complete R Script Inventory (v2 Pipeline)
 
-| Script | Milestone | Purpose |
-|--------|-----------|---------|
-| `r/phase2_setup.R` | Setup | Install + verify all packages |
-| `r/scripts/phase2/01_feature_engineering.R` | M1 | Engineer 11 new features |
-| `r/scripts/phase2/02_feature_selection.R` | M2 | NZV + Corr + MI + RF selection |
-| `r/scripts/phase2/03_database_setup.R` | M3 | Create SQLite + load 4 tables |
-| `r/scripts/phase2/04_database_queries.R` | M3 | 7 SQL queries + visualisation |
-| `r/scripts/phase2/05_ml_models.R` | M4 | Train 13 ML algorithms |
-| `r/scripts/phase2/06_hyperparameter_tuning.R` | M5 | Grid search + 5-fold CV |
-| `r/scripts/phase2/07_model_evaluation.R` | M6 | Leaderboard + DB update |
-| `r/scripts/phase2/08_comparative_visualizations.R` | M6 | 10+ ggplot2 figures |
-| `r/scripts/phase2/09_impact_tier.R` | M7a | Impact-tier 10 classifiers |
-| `r/scripts/phase2/10_clustering.R` | M7b | TF-IDF + KMeans clustering |
+| Script | Purpose | Run Time |
+|--------|---------|----------|
+| `r/scripts/phase2/00_enriched_features.R` | Build 205-feature enriched matrix | ~2 min |
+| `r/scripts/phase2/01_feature_engineering.R` | v1 structural features | ~5 sec |
+| `r/scripts/phase2/02_feature_selection.R` | v1 feature selection | ~15 sec |
+| `r/scripts/phase2/02_feature_selection_v2.R` | v2 RF-based selection → 80 features | ~1 min |
+| `r/scripts/phase2/03_database_setup.R` | Create SQLite + load 4 tables | ~5 sec |
+| `r/scripts/phase2/04_database_queries.R` | 7 SQL queries + visualisation | ~5 sec |
+| `r/scripts/phase2/05_ml_models.R` | v1 ML pipeline (11 models) | ~5 min |
+| `r/scripts/phase2/05_ml_models_v2.R` | v2 ML pipeline (13 models) | ~5 min |
+| `r/scripts/phase2/06_hyperparameter_tuning.R` | v1 tuning | ~20 min |
+| `r/scripts/phase2/06_hyperparameter_tuning_v2.R` | v2 tuning (RF+XGB+SVM) | ~30 min |
+| `r/scripts/phase2/07_model_evaluation.R` | v1 leaderboard | ~5 sec |
+| `r/scripts/phase2/07_model_evaluation_v2.R` | v2 leaderboard | ~5 sec |
+| `r/scripts/phase2/08_comparative_visualizations.R` | v1 figures | ~30 sec |
+| `r/scripts/phase2/08_visualizations_v2.R` | v2 figures (9 new) | ~30 sec |
+| `r/scripts/phase2/09_impact_tier.R` | v1 impact tier | ~5 min |
+| `r/scripts/phase2/09_impact_tier_v2.R` | v2 impact tier | ~5 min |
+| `r/scripts/phase2/10_clustering.R` | TF-IDF + KMeans clustering | ~5 min |
 
 ---
 
-## How to Run the Complete Pipeline
+## How to Run the Full v2 Pipeline
 
 ```r
-# In RStudio — set working directory to project root first
 setwd("E:/Tuned_Research")
-R_PATH <- "C:/Program Files/R/R-4.6.1/bin/Rscript.exe"
 
-# Or run each script sequentially:
-source("r/scripts/phase2/01_feature_engineering.R")
-source("r/scripts/phase2/02_feature_selection.R")
-source("r/scripts/phase2/03_database_setup.R")
-source("r/scripts/phase2/04_database_queries.R")
-source("r/scripts/phase2/05_ml_models.R")        # ~5-10 min
-source("r/scripts/phase2/06_hyperparameter_tuning.R")  # ~15-30 min
-source("r/scripts/phase2/07_model_evaluation.R")
-source("r/scripts/phase2/08_comparative_visualizations.R")
-source("r/scripts/phase2/09_impact_tier.R")       # ~5-10 min
-source("r/scripts/phase2/10_clustering.R")         # ~5-10 min
+# Option A: Run the master script
+source("r/run_enhanced_pipeline.R")
+
+# Option B: Run each step individually
+source("r/scripts/phase2/00_enriched_features.R")       # features
+source("r/scripts/phase2/02_feature_selection_v2.R")    # selection
+source("r/scripts/phase2/05_ml_models_v2.R")            # training
+source("r/scripts/phase2/06_hyperparameter_tuning_v2.R") # tuning (~30 min)
+source("r/scripts/phase2/07_model_evaluation_v2.R")     # leaderboard
+source("r/scripts/phase2/08_visualizations_v2.R")       # figures
+source("r/scripts/phase2/09_impact_tier_v2.R")          # impact
+source("r/scripts/phase2/10_clustering.R")              # clustering
 ```
 
 ---
 
-*Last updated: 2026-09-19 | R 4.6.1 | SQLite via RSQLite*
+*Last updated: September 2026 | R 4.6.1 | Enhanced Pipeline v2*

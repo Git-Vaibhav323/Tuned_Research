@@ -1,0 +1,75 @@
+=== M4v2: ML Models — Enriched Features ===
+
+Loading enriched selected features...
+  2000 rows × 80 features | Classes: closed, fully_open, partially_open
+
+Split | Train: 1400  Val: 299  Test: 301
+Train:
+y_tr
+        closed     fully_open partially_open 
+           310            584            506 
+Test:
+y_te
+        closed     fully_open partially_open 
+            67            125            109 
+
+
+--- Group 1: Linear Models ---
+  Logistic Regression (multinom)             ... OK
+  Elastic Net (glmnet, alpha=0.5)            ... OK
+
+--- Group 2: Tree Models ---
+  CART Decision Tree                         ... OK
+  Random Forest (500 trees) *** KEY MODEL *** ... OK
+
+--- Group 3: Boosting ---
+  XGBoost (150 rounds) *** KEY MODEL ***     ... OK
+  Gradient Boosting (gbm, 300 trees)         ... OK
+  AdaBoost (100 iters)                       ... OK
+
+--- Group 4: SVM ---
+  SVM (RBF kernel)                           ... OK
+  SVM (Linear kernel)                        ... OK
+
+--- Group 5: Probabilistic ---
+  Naive Bayes                                ... OK
+
+--- Group 6: Discriminant Analysis ---
+  LDA                                        ... OK
+
+--- Group 7: Instance-Based + Neural Network ---
+  MLP Neural Network (size=100)              ... OK
+
+
+=== RESULTS (Enriched Features) ===
+
+Model                              Acc    Prec     Rec      F1     AUC
+--------------------------------------------------------------------------- 
+lda                             0.5748  0.5700  0.5694  0.5696  0.7577
+svm_rbf                         0.5681  0.5597  0.5590  0.5559  0.7574
+mlp                             0.5681  0.5650  0.5675  0.5657  0.7659
+logistic_regression             0.5648  0.5602  0.5668  0.5631  0.7565
+elastic_net                     0.5581  0.5559  0.5522  0.5539  0.7584
+svm_linear                      0.5515  0.5445  0.5438  0.5441  0.7587
+random_forest                   0.5482  0.5448  0.5296  0.5317  0.7572
+gradient_boosting               0.5382  0.5415  0.5359  0.5384  0.7402
+adaboost                        0.5150  0.5126  0.5121  0.5123  0.6963
+decision_tree                   0.5083  0.5295  0.4962  0.5017  0.6924
+naive_bayes                     0.4186  0.4742  0.4909  0.4081  0.6840
+xgboost                         0.3455  0.3464  0.3530  0.3428  0.5243
+
+--- Category Winners ---
+  Best Accuracy : lda                          0.5748
+  Best Macro-F1 : lda                          0.5696
+  Best ROC-AUC  : mlp                          0.7659
+
+--- vs Old Baseline (9 features) ---
+  Old best accuracy: 0.4452 | Old best F1: 0.3783
+  New best accuracy: 0.5748 | New best F1: 0.5696
+  Accuracy improvement: +0.1296 (+13.0%)
+
+Saved: model_metrics_v2.csv (24 rows)
+Saved: r_model_leaderboard_v2_baseline.csv (12 models)
+Saved: model_objects_v2.rds (12 models)
+
+=== M4v2 COMPLETE ===

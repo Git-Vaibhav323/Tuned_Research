@@ -137,4 +137,4 @@ implementation differences between scikit-learn and R's `sample()` for stratific
 
 ---
 
-*Generated: 2026-09-20 13:59:40.591766 | R R version 4.6.1 (2026-06-24 ucrt)*
+*Generated: 2026-09-20 16:19:55.089461 | R R version 4.6.1 (2026-06-24 ucrt)*

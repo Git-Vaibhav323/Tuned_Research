@@ -1,0 +1,4 @@
+RF class: randomForest 
+SVM class: svm 
+Classes: partially_open, fully_open, closed 
+LB cols: model, split, acc, prec, rec, f1, roc, model_type, cv_f1, best_params, rank 

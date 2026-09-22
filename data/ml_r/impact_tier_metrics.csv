@@ -9,11 +9,13 @@ gradient_boosting,val,0.5167,0.5095,0.681
 gradient_boosting,test,0.5367,0.5269,0.7015
 xgboost,val,0.3367,0.3354,0.507
 xgboost,test,0.3433,0.343,0.4712
-svm_rbf,val,0.5333,0.5202,0.6819
-svm_rbf,test,0.56,0.5336,0.7137
+adaboost,val,0.5333,0.5198,0.6815
+adaboost,test,0.57,0.5473,0.7291
+svm_rbf,val,0.5333,0.5202,0.6822
+svm_rbf,test,0.56,0.5336,0.7142
 lda,val,0.4967,0.47,0.668
 lda,test,0.55,0.5246,0.7004
 naive_bayes,val,0.54,0.5164,0.6737
 naive_bayes,test,0.59,0.5688,0.7434
-mlp,val,0.5033,0.5007,0.6657
-mlp,test,0.4333,0.4339,0.6247
+mlp,val,0.4567,0.4569,0.6325
+mlp,test,0.3767,0.3785,0.5756

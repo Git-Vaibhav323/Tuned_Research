@@ -1,0 +1,5 @@
+[19:12:59] WARNING: src/learner.cc:782: 
+Parameters: { "verbose" } are not used.
+
+Warning message:
+In lda.default(x, grouping, ...) : variables are collinear

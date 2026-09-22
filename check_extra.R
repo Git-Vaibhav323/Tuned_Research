@@ -1,0 +1,8 @@
+setwd('e:/Tuned_Research')
+mods <- readRDS('data/ml_r/model_objects_v2.rds')
+cat('RF class:', class(mods$random_forest), '\n')
+cat('SVM class:', class(mods$svm_rbf), '\n')
+sel <- read.csv('data/ml_r/selected_features_v2.csv')
+cat('Classes:', paste(unique(sel$oa_category), collapse=', '), '\n')
+lb <- read.csv('reports/tables/r_model_leaderboard_v2.csv')
+cat('LB cols:', paste(colnames(lb), collapse=', '), '\n')
