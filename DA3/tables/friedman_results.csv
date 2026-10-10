@@ -1,0 +1,2 @@
+test,n_models,n_folds,metric,chi_squared,df,p_value,alpha,reject_h0,conclusion
+Friedman,12,5,Macro-F1,43.4615,11,9e-6,0.05,TRUE,Significant difference exists between models

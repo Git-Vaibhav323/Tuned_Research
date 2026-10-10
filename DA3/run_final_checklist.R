@@ -1,0 +1,126 @@
+setwd("e:/Tuned_Research")
+cat("============================================================\n")
+cat("  ResearchPilot DA3 — FINAL VERIFICATION CHECKLIST\n")
+cat("============================================================\n\n")
+
+pass <- 0; fail <- 0
+check <- function(label, condition) {
+  if (condition) {
+    cat(sprintf("  [PASS] %s\n", label)); assign("pass", pass + 1, envir = .GlobalEnv)
+  } else {
+    cat(sprintf("  [FAIL] %s\n", label)); assign("fail", fail + 1, envir = .GlobalEnv)
+  }
+}
+
+cat("--- CRITERION 1: Performance Comparison ---\n")
+check("final_model_comparison.csv exists",    file.exists("DA3/tables/final_model_comparison.csv"))
+check("final_f1_comparison.png exists",       file.exists("DA3/figures/final_f1_comparison.png"))
+check("final_accuracy_comparison.png exists", file.exists("DA3/figures/final_accuracy_comparison.png"))
+check("final_roc_comparison.png exists",      file.exists("DA3/figures/final_roc_comparison.png"))
+check("final_baseline_vs_tuned.png exists",   file.exists("DA3/figures/final_baseline_vs_tuned.png"))
+check("final_all_metrics_heatmap.png exists", file.exists("DA3/figures/final_all_metrics_heatmap.png"))
+
+# Verify table has 15 rows (12 baseline + 3 tuned)
+tbl <- read.csv("DA3/tables/final_model_comparison.csv")
+check("comparison table has 15 models",       nrow(tbl) == 15)
+check("comparison table has Macro_F1 column", "Macro_F1" %in% names(tbl))
+check("SVM-RBF Tuned present (F1=0.5701)",    any(abs(tbl$Macro_F1 - 0.5701) < 0.001))
+check("LDA present (F1=0.5696)",              any(abs(tbl$Macro_F1 - 0.5696) < 0.001))
+
+cat("\n--- CRITERION 1: Statistical Analysis ---\n")
+check("cv_fold_matrix.csv exists",     file.exists("DA3/tables/cv_fold_matrix.csv"))
+check("friedman_results.csv exists",   file.exists("DA3/tables/friedman_results.csv"))
+check("posthoc_matrix.csv exists",     file.exists("DA3/tables/posthoc_matrix.csv"))
+check("statistical_test_results.rds",  file.exists("data/ml_r/statistical_test_results.rds"))
+check("stat_cv_boxplot.png exists",    file.exists("DA3/figures/stat_cv_boxplot.png"))
+check("stat_fold_heatmap.png exists",  file.exists("DA3/figures/stat_fold_heatmap.png"))
+check("stat_mean_f1_bars.png exists",  file.exists("DA3/figures/stat_mean_f1_bars.png"))
+
+# Verify Friedman result
+fr <- read.csv("DA3/tables/friedman_results.csv")
+check("Friedman chi-squared = 43.4615",  abs(fr$chi_squared - 43.4615) < 0.01)
+check("Friedman p-value < 0.05",         fr$p_value < 0.05)
+check("Friedman H0 rejected (TRUE)",     isTRUE(fr$reject_h0))
+
+# Verify CV fold matrix (12 models x 5 folds + extras)
+cv <- read.csv("DA3/tables/cv_fold_matrix.csv")
+check("CV fold matrix has 12 models",   nrow(cv) == 12)
+check("CV fold matrix has 5 fold cols", sum(grepl("^Fold", names(cv))) == 5)
+
+cat("\n--- CRITERION 2: Dashboard ---\n")
+check("dashboard/app.R exists",         file.exists("dashboard/app.R"))
+check("dashboard/README.md exists",     file.exists("dashboard/README.md"))
+check("app.R is non-empty (>10KB)",     file.info("dashboard/app.R")$size > 10000)
+# Parse check
+p <- tryCatch({ parse("dashboard/app.R"); TRUE }, error = function(e) FALSE)
+check("dashboard/app.R parses without syntax errors", p)
+# Data files for dashboard
+check("data/ml_r/model_metrics_v2.csv",    file.exists("data/ml_r/model_metrics_v2.csv"))
+check("data/ml_r/all_results_v2.csv",      file.exists("data/ml_r/all_results_v2.csv"))
+check("data/ml_r/cluster_keywords.csv",    file.exists("data/ml_r/cluster_keywords.csv"))
+check("data/ml_r/cluster_assignments.csv", file.exists("data/ml_r/cluster_assignments.csv"))
+check("data/final/final_dataset.csv",      file.exists("data/final/final_dataset.csv"))
+
+cat("\n--- CRITERION 3: Results Discussion ---\n")
+check("DA3_Results_Discussion.md exists",  file.exists("DA3/DA3_Results_Discussion.md"))
+disc <- paste(readLines("DA3/DA3_Results_Discussion.md"), collapse=" ")
+check("Discussion covers dataset distribution",   grepl("Dataset Distribution", disc))
+check("Discussion covers feature engineering",    grepl("Feature Engineering", disc))
+check("Discussion covers model comparison",       grepl("Model Comparison", disc))
+check("Discussion covers statistical analysis",   grepl("Statistical Analysis", disc))
+check("Discussion covers confusion matrix",       grepl("Confusion Matrix", disc))
+check("Discussion covers ROC-AUC",                grepl("ROC-AUC", disc))
+check("Discussion covers feature importance",     grepl("Feature Importance", disc))
+check("Discussion covers clustering",             grepl("Cluster", disc))
+check("Discussion has causation warning",         grepl("causation", disc))
+
+cat("\n--- CRITERION 4: Conclusion / Limitations / Future ---\n")
+check("DA3_Conclusion_Limitations_Future.md exists", file.exists("DA3/DA3_Conclusion_Limitations_Future.md"))
+clf <- paste(readLines("DA3/DA3_Conclusion_Limitations_Future.md"), collapse=" ")
+check("Conclusion section present",               grepl("Conclusion", clf))
+check("Limitations section present (10 items)",   grepl("L10", clf))
+check("Future scope present",                     grepl("Future Scope", clf))
+check("RAG marked NOT IMPLEMENTED",               grepl("RAG.*NOT IMPLEMENTED|NOT IMPLEMENTED.*RAG", clf))
+check("Ollama marked NOT IMPLEMENTED",            grepl("Ollama.*NOT IMPLEMENTED|NOT IMPLEMENTED.*Ollama", clf))
+check("Implemented vs Future table present",      grepl("IMPLEMENTED.*FUTURE|implemented.*future", tolower(clf)))
+
+cat("\n--- CRITERION 5: Final Report + Code Organization ---\n")
+check("DA3_Final_Report.md exists",  file.exists("DA3/DA3_Final_Report.md"))
+rep <- paste(readLines("DA3/DA3_Final_Report.md"), collapse=" ")
+check("Report has Performance Comparison section", grepl("Final Performance Comparison", rep))
+check("Report has Statistical Analysis section",   grepl("Statistical Analysis", rep))
+check("Report has Dashboard section",              grepl("Interactive Dashboard", rep))
+check("Report has Friedman result (43.4615)",      grepl("43.4615", rep))
+check("Report has p-value (0.000009)",             grepl("0.000009", rep))
+check("Report has References section",             grepl("References", rep))
+check("r/scripts/phase3/11_statistical_analysis.R exists", file.exists("r/scripts/phase3/11_statistical_analysis.R"))
+check("r/scripts/phase3/12_final_comparison.R exists",     file.exists("r/scripts/phase3/12_final_comparison.R"))
+check("DA3/ directory exists",     dir.exists("DA3"))
+check("dashboard/ directory exists", dir.exists("dashboard"))
+check("README.md updated with DA3", grepl("DA3", paste(readLines("README.md"), collapse=" ")))
+
+cat("\n--- CRITERION 6: Presentation + Viva ---\n")
+check("DA3_Presentation.md exists",  file.exists("DA3/DA3_Presentation.md"))
+pres <- paste(readLines("DA3/DA3_Presentation.md"), collapse=" ")
+check("Presentation has 12 slides",              length(gregexpr("# SLIDE", pres)[[1]]) >= 12)
+check("Presentation covers final comparison",    grepl("FINAL PERFORMANCE COMPARISON", pres))
+check("Presentation covers statistical results", grepl("43.4615", pres))
+check("Presentation covers dashboard demo",      grepl("INTERACTIVE DASHBOARD", pres))
+check("Presentation covers clustering",          grepl("CLUSTERING", pres))
+check("Presentation has delivery timing guide",  grepl("Timing", pres))
+check("Presentation has pre-presentation checklist", grepl("Pre-Presentation", pres))
+check("DA3_Viva_QA.md exists",       file.exists("DA3/DA3_Viva_QA.md"))
+viva <- paste(readLines("DA3/DA3_Viva_QA.md"), collapse=" ")
+check("Viva has 50+ Q&A pairs",      length(gregexpr("\\*\\*Q", viva)[[1]]) >= 50)
+check("Viva covers statistical test", grepl("Friedman", viva))
+check("Viva covers dashboard tech",   grepl("Shiny", viva))
+check("Viva covers causation warning",grepl("causation", viva))
+
+cat("\n============================================================\n")
+cat(sprintf("  FINAL SCORE: %d PASSED, %d FAILED\n", pass, fail))
+if (fail == 0) {
+  cat("  STATUS: ALL CHECKS PASSED — DA3 READY FOR SUBMISSION\n")
+} else {
+  cat("  STATUS: SOME CHECKS FAILED — REVIEW ABOVE\n")
+}
+cat("============================================================\n")

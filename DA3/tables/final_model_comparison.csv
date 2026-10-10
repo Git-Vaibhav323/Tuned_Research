@@ -1,0 +1,16 @@
+Display_Name,model_type,Accuracy,Precision,Recall,Macro_F1,ROC_AUC,best_params
+SVM-RBF (Tuned),Tuned,0.5748,NA,NA,0.5701,NA,"cost=10,gamma=0.0010"
+LDA,Baseline,0.5748,0.57,0.5694,0.5696,0.7577,default
+MLP,Baseline,0.5681,0.565,0.5675,0.5657,0.7659,default
+Logistic Regression,Baseline,0.5648,0.5602,0.5668,0.5631,0.7565,default
+SVM-RBF,Baseline,0.5681,0.5597,0.559,0.5559,0.7574,default
+Elastic Net,Baseline,0.5581,0.5559,0.5522,0.5539,0.7584,default
+Random Forest (Tuned),Tuned,0.5615,NA,NA,0.5475,NA,"ntree=500,mtry=8"
+SVM-Linear,Baseline,0.5515,0.5445,0.5438,0.5441,0.7587,default
+Gradient Boosting,Baseline,0.5382,0.5415,0.5359,0.5384,0.7402,default
+Random Forest,Baseline,0.5482,0.5448,0.5296,0.5317,0.7572,default
+AdaBoost,Baseline,0.515,0.5126,0.5121,0.5123,0.6963,default
+Decision Tree,Baseline,0.5083,0.5295,0.4962,0.5017,0.6924,default
+Naive Bayes,Baseline,0.4186,0.4742,0.4909,0.4081,0.684,default
+XGBoost (Tuned),Tuned,0.3555,NA,NA,0.3537,NA,"depth=6,eta=0.10,rounds=300"
+XGBoost,Baseline,0.3455,0.3464,0.353,0.3428,0.5243,default

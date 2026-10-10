@@ -5,7 +5,8 @@
 ResearchPilot builds a reproducible pipeline over OpenAlex AI/ML scholarly metadata: collect and clean papers, store them in a SQLite database, engineer leakage-safe features, train and compare 12 ML models for open-access category prediction, tune strong models, and add secondary impact-tier prediction with exploratory topic clustering.
 
 > **Status:** Phase 1 complete · Phase 2 (M1–M8) complete and frozen · DA-2 faculty demo ready  
-> Phase 3 (RAG / chat assistant / dashboard) is **roadmap only** — not implemented.
+> **DA3 complete:** Statistical analysis · R Shiny + Plotly dashboard · Final report · Viva prep  
+> Phase 3 RAG / Ollama LLM layer is **roadmap only** — not implemented.
 
 ---
 
@@ -211,13 +212,50 @@ Tuned_Research/
 │   ├── final/               # Phase 1 locked CSV (2000 × 27)
 │   └── ml_r/                # Phase 2 R matrices, model objects, splits
 ├── database/                # researchpilot_r.db (SQLite)
-├── r/scripts/phase2/        # All Phase 2 R scripts
+├── r/scripts/
+│   ├── phase2/              # All Phase 2 R scripts (frozen)
+│   └── phase3/              # DA3 scripts (statistical analysis, comparison)
+├── dashboard/               # R Shiny + Plotly interactive dashboard
+│   └── app.R                # shiny::runApp("dashboard") to launch
+├── DA3/                     # DA3 deliverables
+│   ├── DA3_Final_Report.md
+│   ├── DA3_Statistical_Analysis.md
+│   ├── DA3_Results_Discussion.md
+│   ├── DA3_Conclusion_Limitations_Future.md
+│   ├── DA3_Viva_QA.md
+│   ├── figures/             # DA3 output figures
+│   └── tables/              # DA3 output tables (Friedman, fold matrix, etc.)
 ├── reports/
 │   ├── figures/phase2_r/    # 15+ plots (ROC, CM, feature importance, etc.)
 │   └── tables/              # leaderboard CSVs
 ├── DA2/                     # Faculty documentation pack
 ├── configs/                 # YAML configs
 └── DA2_Faculty_Demo_COMPLETE.R  # Main demo script
+```
+
+## DA3 Results (Verified)
+
+| Item | Value |
+|------|-------|
+| Best model (overall) | SVM-RBF Tuned — Macro-F1 = **0.5701**, Accuracy = **57.48%** |
+| Best baseline | LDA — Macro-F1 = **0.5696** |
+| Friedman test | χ²(11) = **43.4615**, p = **0.000009** → REJECT H₀ |
+| Significant pairs (Nemenyi) | **7 pairs** — XGBoost & Naive Bayes provably inferior |
+| Dashboard | R Shiny + Plotly, 4 tabs — `shiny::runApp("dashboard")` |
+
+## DA3 Quick Start
+
+```r
+setwd("e:/Tuned_Research")
+
+# Step 1: Run statistical analysis (Friedman test) — ~15 min
+source("r/scripts/phase3/11_statistical_analysis.R")
+
+# Step 2: Run final comparison charts — ~2 min
+source("r/scripts/phase3/12_final_comparison.R")
+
+# Step 3: Launch interactive dashboard
+shiny::runApp("dashboard")
 ```
 
 ---
