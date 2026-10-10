@@ -1,0 +1,10 @@
+Predicted,Actual,Freq
+closed,closed,37
+fully_open,closed,13
+partially_open,closed,17
+closed,fully_open,9
+fully_open,fully_open,78
+partially_open,fully_open,38
+closed,partially_open,21
+fully_open,partially_open,30
+partially_open,partially_open,58

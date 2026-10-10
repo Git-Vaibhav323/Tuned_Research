@@ -1,0 +1,7 @@
+model,class,actual_auc
+LDA,closed,0.8379
+LDA,fully_open,0.7703
+LDA,partially_open,0.6649
+Random Forest,closed,0.8256
+Random Forest,fully_open,0.7703
+Random Forest,partially_open,0.6756
