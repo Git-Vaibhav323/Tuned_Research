@@ -1,0 +1,21 @@
+{
+  "model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+  "mode": "qlora_4bit",
+  "lora_r": 8,
+  "lora_alpha": 16,
+  "lora_dropout": 0.05,
+  "max_seq_len": 384,
+  "micro_bs": 1,
+  "grad_accum": 8,
+  "lr": 0.0002,
+  "epochs": 3,
+  "train_examples": 8343,
+  "val_examples": 1785,
+  "train_loss": 0.4922,
+  "steps": 3126,
+  "elapsed_sec": 34151.3,
+  "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+  "vram_gb": 6.0,
+  "torch_ver": "2.3.1+cu121",
+  "smoke_test": false
+}

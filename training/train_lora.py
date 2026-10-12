@@ -268,10 +268,9 @@ sft_config = SFTConfig(
     fp16                        = True,
     bf16                        = False,
     logging_steps               = 10,
-    eval_strategy               = "steps",
-    eval_steps                  = 50,
+    eval_strategy               = "no",
     save_strategy               = "steps",
-    save_steps                  = 100,
+    save_steps                  = 500,
     save_total_limit            = 2,
     load_best_model_at_end      = False,
     report_to                   = "none",
@@ -287,7 +286,6 @@ trainer = SFTTrainer(
     model          = model,
     args           = sft_config,
     train_dataset  = train_ds,
-    eval_dataset   = val_ds,
     peft_config    = lora_cfg if use_qlora else None,
 )
 
