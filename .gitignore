@@ -94,6 +94,14 @@ logs/
 *.log
 *.out
 
+# --- LLaMA / llama.cpp binaries (too large for GitHub) ---
+llama-b*/
+llama_cpp_source/
+llama_convert/
+*.dll
+*.exe
+!scripts/*.exe
+
 # --- Model weights & large artifacts (keep directory structure via .gitkeep) ---
 models/checkpoints/**
 !models/checkpoints/.gitkeep
