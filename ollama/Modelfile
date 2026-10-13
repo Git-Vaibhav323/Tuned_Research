@@ -1,22 +1,7 @@
 # ResearchPilot Ollama Modelfile
-#
-# Two usage paths:
-#
-# PATH A — Use the fine-tuned GGUF model (after training + conversion):
-#   FROM ./researchpilot-q4km.gguf
-#
-# PATH B — Use base Qwen2.5 from Ollama registry (no training required):
-#   FROM qwen2.5:1.5b-instruct
-#
-# Uncomment the appropriate FROM line below.
+# Fine-tuned model: Qwen2.5-1.5B-Instruct + LoRA trained on 8,343 research examples
 
-# ── Uncomment ONE of the following ────────────────────────────────────────────
-
-# Path A: fine-tuned model (requires training/merge_adapter.py + GGUF conversion)
-# FROM ./researchpilot-q4km.gguf
-
-# Path B: base model from Ollama registry (available now, no training needed)
-FROM qwen2.5:1.5b-instruct
+FROM ./researchpilot-q4km.gguf
 
 # ── System prompt ──────────────────────────────────────────────────────────────
 SYSTEM """You are ResearchPilot, an AI research assistant specialising in AI and machine learning literature.
@@ -44,23 +29,9 @@ Format:
 """
 
 # ── Generation parameters ──────────────────────────────────────────────────────
-# Conservative settings for factual research assistance
 PARAMETER temperature 0.1
 PARAMETER top_p 0.9
 PARAMETER top_k 40
 PARAMETER repeat_penalty 1.1
 PARAMETER num_predict 512
 PARAMETER seed 42
-
-# ── Example interactions (shown as comments for documentation) ─────────────────
-# USER: Summarise this paper: [title + abstract]
-# ASSISTANT: Structured summary with clear caveats
-#
-# USER: What methodology does this paper use?
-# ASSISTANT: Inferred methodology from abstract with limitations noted
-#
-# USER: Is this paper freely available? [title + oa_status]
-# ASSISTANT: OA status explanation with access URL if available
-#
-# USER: What are the limitations of using LSTMs for time-series in 2024?
-# ASSISTANT: General limitations discussion, clearly not paper-specific
