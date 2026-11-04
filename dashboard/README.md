@@ -1,57 +1,59 @@
-# ResearchPilot DA3 — Interactive Dashboard
+# ResearchPilot — R Shiny Dashboard
 
-## Quick Start
+Interactive analytics dashboard for exploring all ML pipeline results.
+
+---
+
+## Launch
 
 ```r
-# Option 1: From R console
-setwd("e:/Tuned_Research")
+setwd("E:/Tuned_Research")
 shiny::runApp("dashboard")
-
-# Option 2: From inside the dashboard folder
-shiny::runApp(".")
 ```
 
-## Requirements
+Required R packages: `shiny`, `plotly`, `dplyr`, `tidyr`, `readr`, `DT`, `scales`
 
-Install required packages:
+---
 
-```r
-install.packages(c("shiny", "plotly", "dplyr", "tidyr", "readr", "DT", "scales"))
-```
+## Tabs
 
-## Dashboard Tabs
+### Tab 1 — Overview
+- KPI cards: 2,000 papers · 27→206→80 features · 12 models · 301 test papers
+- Publication year distribution (2022–2025)
+- Open-access category breakdown (fully open / partially open / closed)
 
-| Tab | Purpose |
-|-----|---------|
-| **Overview** | KPI cards, OA distribution, feature pipeline summary |
-| **Model Comparison** | Metric selector, all 15 models (12 baseline + 3 tuned) |
-| **Model Diagnostics** | Confusion matrix, ROC curves, feature importance |
-| **Research Clusters** | Cluster sizes, dominant terms, theme descriptions |
+### Tab 2 — Model Comparison
+- Interactive bar chart of all 15 models (12 baseline + 3 tuned)
+- Metric selector: Accuracy, Macro-F1, ROC-AUC
+- Full results table with sortable columns
 
-## Data Sources
+### Tab 3 — Model Diagnostics
+- Model selector: LDA or Random Forest
+- Confusion matrix heatmap (column-normalised, actual counts in cells)
+- ROC curves per class (one-vs-rest) with AUC values
+- Random Forest feature importance — top 15 by MeanDecreaseGini
 
-The dashboard reads directly from existing project files:
+### Tab 4 — Research Clusters
+- K-Means topic clustering (k=8, silhouette=0.0645)
+- Cluster size pie chart
+- Dominant TF-IDF terms per cluster
+- Interpretation note: clusters are exploratory due to low silhouette score
 
-| File | Used In |
-|------|---------|
-| `data/ml_r/model_metrics_v2.csv` | Tab 2, Tab 3 |
-| `data/ml_r/all_results_v2.csv` | Tab 2 |
-| `data/ml_r/cluster_keywords.csv` | Tab 4 |
-| `data/ml_r/cluster_assignments.csv` | Tab 4 |
-| `data/final/final_dataset.csv` | Tab 1 (OA distribution) |
+---
 
-## No fake data
+## Key numbers shown
 
-All values come from the actual DA2 pipeline results. Confusion matrices and
-ROC-AUC values are from the proper held-out test set (n=301).
+| Metric | Value |
+|--------|-------|
+| Best model | SVM-RBF (tuned) — Macro-F1 = 0.5701 |
+| Best baseline | LDA — Macro-F1 = 0.5696, Accuracy = 57.48% |
+| Friedman test | χ²(11) = 43.46, p = 9×10⁻⁶ |
+| Top feature | pub_ieee (Gini = 43.78) |
+| Cluster silhouette | 0.0645 (exploratory) |
 
-## Troubleshooting
+---
 
-**Error: Cannot find project root**
-→ Make sure `setwd("e:/Tuned_Research")` before running `shiny::runApp("dashboard")`
+## Data sources
 
-**Error: package 'X' not found**
-→ Run `install.packages("X")` and restart R
-
-**Port already in use**
-→ `shiny::runApp("dashboard", port = 3839)`
+All charts are generated from saved CSV outputs in `reports/tables/` and `data/ml_r/`.
+No models are re-trained when the dashboard loads.
