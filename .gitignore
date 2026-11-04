@@ -58,3 +58,14 @@ evaluation/reports/
 
 # Env secrets
 .env
+
+# Databases
+*.db
+*.sqlite3
+database/*.db
+
+# Test folders
+data/test*/
+
+# Cleaned CSVs
+data/cleaned/
