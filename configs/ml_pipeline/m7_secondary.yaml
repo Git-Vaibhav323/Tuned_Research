@@ -1,0 +1,43 @@
+# Phase 2 / M7 — Secondary track (impact_tier) + light clustering
+# Reuses M3 impact matrices; does not modify Phase 1 or M6 OA artifacts.
+
+random_state: 42
+cv_folds: 3
+cv_scoring: f1_macro
+save_top_n: 3
+
+paths:
+  x_impact: data/ml/m3/X_impact_scaled.csv
+  y_impact: data/ml/m3/y_impact_final.csv
+  source_csv: data/final/final_dataset.csv
+  out_dir: evaluation/reports/m7
+  checkpoints: models/checkpoints/m7
+  figures: reports/figures/m7
+
+impact_task:
+  target: impact_tier
+  classes: [low, medium, high]
+  # Leakage exclusions already applied in M3 impact matrix (no citation_* columns)
+
+models:
+  - dummy
+  - logistic_regression
+  - gaussian_nb
+  - knn
+  - decision_tree
+  - random_forest
+  - extra_trees
+  - adaboost
+  - gradient_boosting
+  - xgboost
+  - lightgbm
+  - mlp
+
+clustering:
+  enabled: true
+  # Use TF-IDF columns only (topic signal) + optional structural
+  use_tfidf_only: true
+  k_min: 3
+  k_max: 8
+  # Fit KMeans on train rows; assign clusters to all rows
+  algorithm: kmeans

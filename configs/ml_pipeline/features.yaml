@@ -1,0 +1,116 @@
+# Phase 2 / M2 — Feature engineering & selection
+# Extends Phase 1 final_dataset; does not modify Phase 1 files.
+
+feature_version: v1
+
+paths:
+  source_csv: data/final/final_dataset.csv
+  ml_dir: data/ml
+  reports_dir: reports
+  metadata_dir: data/metadata
+  vectorizer: data/ml/tfidf_vectorizer.joblib
+
+splits:
+  train: 0.70
+  val: 0.15
+  test: 0.15
+  random_state: 42
+  # Primary stratification target (exists in Phase 1)
+  stratify_column: oa_category
+
+# Relative impact tiers from citation_per_year tertiles
+# Thresholds are FIT ON TRAIN ONLY, then applied to val/test (no label leakage).
+impact_tier:
+  source_column: citation_per_year
+  labels: [low, medium, high]
+  # q33 / q66 on train
+  quantiles: [0.333333, 0.666667]
+
+text_features:
+  enabled: true
+  # Concatenate title + abstract for TF-IDF
+  columns: [title, abstract]
+  max_features: 100
+  ngram_range: [1, 2]
+  min_df: 2
+  stop_words: english
+
+# ---------------------------------------------------------------------------
+# Track 1 — Open-access category (PRIMARY graded task)
+# ---------------------------------------------------------------------------
+tracks:
+  oa_category:
+    target: oa_category
+    problem_type: multiclass_classification
+    # Never use these as inputs for this track
+    leakage_exclude:
+      - is_open_access
+      - oa_status
+      - oa_url
+      - oa_category
+      - open_access
+      - has_fulltext
+      # identifiers / raw text held out of tabular matrix (TF-IDF uses title/abstract separately)
+      - id
+      - title
+      - abstract
+      - doi
+      - concepts
+      - keywords
+      - concepts_clean
+      - keywords_clean
+      - language
+      - type
+    # Structural / engineered numeric features allowed
+    structural_features:
+      - publication_year
+      - paper_age
+      - title_length
+      - abstract_length
+      - keyword_count
+      - concept_count
+      - recent_paper
+      # has_doi excluded: near-constant (~99.9% = 1) — no predictive signal
+      # Citations excluded: model OA from content/metadata style signals only
+
+  impact_tier:
+    target: impact_tier
+    problem_type: multiclass_classification
+    leakage_exclude:
+      - cited_by_count
+      - citation_per_year
+      - citation_log
+      - impact_tier
+      - id
+      - title
+      - abstract
+      - doi
+      - concepts
+      - keywords
+      - concepts_clean
+      - keywords_clean
+      - language
+      - type
+      - open_access
+      - oa_url
+      - oa_status
+      - has_doi
+    structural_features:
+      - publication_year
+      - paper_age
+      - title_length
+      - abstract_length
+      - keyword_count
+      - concept_count
+      - recent_paper
+      - is_open_access
+      - has_fulltext
+      # encoded oa_category one-hot added in code as oa_cat_*
+
+feature_selection:
+  enabled: true
+  method: mutual_info
+  # Applied on TRAIN only for the primary track
+  track: oa_category
+  k_best: 30
+  random_state: 42

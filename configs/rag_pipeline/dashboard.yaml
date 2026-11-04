@@ -1,0 +1,20 @@
+# Phase 3 — Dashboard / serving settings (placeholder)
+
+project: ResearchPilot
+phase: 3
+
+frontend:
+  framework: streamlit
+  title: ResearchPilot Dashboard
+  port: 8501
+
+backend:
+  framework: fastapi
+  host: 0.0.0.0
+  port: 8000
+
+modules:
+  - adaptive_research_translator
+  - statistical_advisor
+  - abstract_improver
+  - research_gap_finder

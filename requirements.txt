@@ -1,0 +1,51 @@
+# ResearchPilot — planned dependencies (foundation scaffold)
+# Do not treat this as an installed environment.
+# Pin versions when each phase begins.
+
+# --- Phase 1: Dataset, EDA, preprocessing ---
+pandas
+numpy
+scipy
+statsmodels
+pymupdf
+pyarrow
+openpyxl
+jupyter
+notebook
+matplotlib
+seaborn
+plotly
+tqdm
+pyyaml
+python-dotenv
+rich
+requests
+
+# --- Phase 2: Machine learning & comparative analysis ---
+scikit-learn
+xgboost
+lightgbm
+imbalanced-learn
+torch
+sqlalchemy
+psycopg
+
+# --- Phase 3: Fine-tuning, RAG, dashboard ---
+transformers
+datasets
+accelerate
+peft
+trl
+unsloth
+sentence-transformers
+chromadb
+langchain
+langgraph
+fastapi
+uvicorn
+streamlit
+pydantic
+
+# --- Evaluation (Phase 2–3) ---
+bert-score
+evaluate

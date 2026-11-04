@@ -1,0 +1,16 @@
+model,split,acc,prec,rec,f1,roc,model_type,cv_f1,best_params,rank
+svm_tuned,test,0.5748,NA,NA,0.5701,NA,tuned,0.6065,"cost=10,gamma=0.0010",1
+lda,test,0.5748,0.57,0.5694,0.5696,0.7577,baseline,NA,default,2
+mlp,test,0.5681,0.565,0.5675,0.5657,0.7659,baseline,NA,default,3
+svm_rbf,test,0.5681,0.5597,0.559,0.5559,0.7574,baseline,NA,default,4
+logistic_regression,test,0.5648,0.5602,0.5668,0.5631,0.7565,baseline,NA,default,5
+random_forest_tuned,test,0.5615,NA,NA,0.5475,NA,tuned,0.6181,"ntree=500,mtry=8",6
+elastic_net,test,0.5581,0.5559,0.5522,0.5539,0.7584,baseline,NA,default,7
+svm_linear,test,0.5515,0.5445,0.5438,0.5441,0.7587,baseline,NA,default,8
+random_forest,test,0.5482,0.5448,0.5296,0.5317,0.7572,baseline,NA,default,9
+gradient_boosting,test,0.5382,0.5415,0.5359,0.5384,0.7402,baseline,NA,default,10
+adaboost,test,0.515,0.5126,0.5121,0.5123,0.6963,baseline,NA,default,11
+decision_tree,test,0.5083,0.5295,0.4962,0.5017,0.6924,baseline,NA,default,12
+naive_bayes,test,0.4186,0.4742,0.4909,0.4081,0.684,baseline,NA,default,13
+xgboost_tuned,test,0.3555,NA,NA,0.3537,NA,tuned,NA,"depth=6,eta=0.10,rounds=300",14
+xgboost,test,0.3455,0.3464,0.353,0.3428,0.5243,baseline,NA,default,15

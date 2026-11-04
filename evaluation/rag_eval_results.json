@@ -1,0 +1,372 @@
+{
+  "timestamp": "2026-10-15T11:03:26.621372",
+  "summary": {
+    "pass": 39,
+    "fail": 0,
+    "skip": 0,
+    "human_review": 1,
+    "total": 40
+  },
+  "results": [
+    {
+      "test_id": "IMPORT",
+      "category": "Setup",
+      "description": "All RAG modules import successfully",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "IDX-01",
+      "category": "Index",
+      "description": "Index not empty (5796 chunks, 2000 docs)",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "chunks=5796 docs=2000",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "IDX-02",
+      "category": "Index",
+      "description": "Index has at least 50 documents",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "unique_docs=2000",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "RET-01",
+      "category": "Retrieval",
+      "description": "retrieve('transformer attention mechanism')",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "top_score=0.63 hits=5 kw=\u2717",
+      "latency_ms": 37623.9712999959
+    },
+    {
+      "test_id": "RET-02",
+      "category": "Retrieval",
+      "description": "retrieve('object detection deep learning YOLO')",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "top_score=0.75 hits=5 kw=\u2713",
+      "latency_ms": 35.02380001009442
+    },
+    {
+      "test_id": "RET-03",
+      "category": "Retrieval",
+      "description": "retrieve('convolutional neural network image')",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "top_score=0.53 hits=5 kw=\u2717",
+      "latency_ms": 35.08179998607375
+    },
+    {
+      "test_id": "RET-04",
+      "category": "Retrieval",
+      "description": "retrieve('natural language processing BERT GPT')",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "top_score=0.59 hits=5 kw=\u2713",
+      "latency_ms": 25.648299983004108
+    },
+    {
+      "test_id": "RET-05",
+      "category": "Retrieval",
+      "description": "retrieve('random forest classification')",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "top_score=0.65 hits=5 kw=\u2713",
+      "latency_ms": 28.65429999656044
+    },
+    {
+      "test_id": "RET-NEG",
+      "category": "Retrieval",
+      "description": "Nonsense query \u2192 low relevance scores",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "max_score=0.110",
+      "latency_ms": 35.25429998990148
+    },
+    {
+      "test_id": "RET-EMPTY",
+      "category": "Retrieval",
+      "description": "Empty query returns no results",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "empty string",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "META-TITLE",
+      "category": "Metadata",
+      "description": "Hit has non-empty 'title'",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "value='Understanding of Machine Learn'",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "META-YEAR",
+      "category": "Metadata",
+      "description": "Hit has non-empty 'year'",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "value='2023'",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "META-SOURCE",
+      "category": "Metadata",
+      "description": "Hit has non-empty 'source'",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "value='openalex_csv'",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "META-CHUNK_ID",
+      "category": "Metadata",
+      "description": "Hit has non-empty 'chunk_id'",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "value='97524acf5b3d329927ee'",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "META-DOC_ID",
+      "category": "Metadata",
+      "description": "Hit has non-empty 'doc_id'",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "value='da792c1d1f2f318f'",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "CIT-01",
+      "category": "Citations",
+      "description": "format_citations returns non-empty list",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "count=3",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "CIT-02",
+      "category": "Citations",
+      "description": "Citation has label field '[N]'",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "label=[1]",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "CIT-03",
+      "category": "Citations",
+      "description": "Citation title is non-empty",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "title=Gradient-based learning applied to docum",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "CIT-04",
+      "category": "Citations",
+      "description": "Citation number starts at 1",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "number=1",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "CIT-05",
+      "category": "Citations",
+      "description": "DOI URL format correct when present",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "doi_url=https://doi.org/10.57702/yobif9bg",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "CIT-06",
+      "category": "Citations",
+      "description": "Evidence type is 'Full text' or 'Abstract only'",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "evidence_type=Abstract only",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "CIT-MD",
+      "category": "Citations",
+      "description": "format_citations_markdown returns non-empty string",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "len=580",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "LOAD-CSV",
+      "category": "Loading",
+      "description": "load_openalex_csv loads 2000 docs",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "loaded=2000",
+      "latency_ms": 256.00379999377765
+    },
+    {
+      "test_id": "LOAD-SCHEMA",
+      "category": "Loading",
+      "description": "Loaded doc has required fields",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "keys=['doc_id', 'title', 'abstract', 'text', 'authors', 'year']",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "CHUNK-01",
+      "category": "Chunking",
+      "description": "chunk_documents produces chunks for 5 docs",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "chunks=15",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "CHUNK-FIELDS",
+      "category": "Chunking",
+      "description": "Chunk has required provenance fields",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "keys=['chunk_id', 'doc_id', 'text', 'title', 'authors', 'year']",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "CHUNK-MINLEN",
+      "category": "Chunking",
+      "description": "All chunks >= MIN_CHUNK_CHARS",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "min_len=177",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "PDF-EMPTY",
+      "category": "Loading",
+      "description": "load_pdf_bytes(b'') returns None",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "empty bytes",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "PDF-GARBAGE",
+      "category": "Loading",
+      "description": "load_pdf_bytes(garbage) returns None",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "random bytes",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "CSV-BAD-COLS",
+      "category": "Loading",
+      "description": "CSV with no title/abstract returns error",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "docs=0 warnings=1",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "CSV-GOOD",
+      "category": "Loading",
+      "description": "Valid CSV with title+abstract loads correctly",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "docs=1",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "CSV-SKIP-EMPTY",
+      "category": "Loading",
+      "description": "CSV skips empty rows, loads valid ones",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "docs=2",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "IDEM-01",
+      "category": "Indexing",
+      "description": "Re-indexing same docs adds 0 new chunks",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "added=0",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "IDEM-02",
+      "category": "Indexing",
+      "description": "Total chunk count unchanged after re-index",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "before=5796 after=5796",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "PERSIST-01",
+      "category": "Persistence",
+      "description": "Chunk count matches after collection re-open",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "before=5796 after=5796",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "OLLAMA-01",
+      "category": "Generation",
+      "description": "Ollama is reachable and model loaded",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "model_ready=True",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "OLLAMA-02",
+      "category": "Generation",
+      "description": "rag_chat() returns tokens and citations",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "tokens=201 cits=5",
+      "latency_ms": 6619.025300024077
+    },
+    {
+      "test_id": "OLLAMA-03",
+      "category": "Generation",
+      "description": "rag_chat() first-token latency < 30s",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "latency=6619ms",
+      "latency_ms": 6619.025300024077
+    },
+    {
+      "test_id": "OLLAMA-QUALITY",
+      "category": "Generation",
+      "description": "Answer quality \u2014 does it use evidence and cite sources?",
+      "status": "HUMAN-REVIEW",
+      "review_type": "HUMAN-REVIEW",
+      "detail": "Requires human review of answer content",
+      "latency_ms": 0.0
+    },
+    {
+      "test_id": "LAT-RET",
+      "category": "Latency",
+      "description": "Average retrieval latency < 2000ms",
+      "status": "PASS",
+      "review_type": "AUTO",
+      "detail": "avg=41ms q1=33ms q2=50ms",
+      "latency_ms": 41.32470001059119
+    }
+  ]
+}

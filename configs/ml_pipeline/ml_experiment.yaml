@@ -1,0 +1,71 @@
+# Phase 2 — Machine learning experiment settings
+
+project: ResearchPilot
+phase: 2
+
+paths:
+  source_csv: data/final/final_dataset.csv
+  ml_dir: data/ml
+  m3_dir: data/ml/m3
+  database: database/researchpilot.db
+  models: models/checkpoints
+  reports: reports
+  evaluation: evaluation/reports
+  features_config: configs/phase2/features.yaml
+  selection_config: configs/phase2/feature_selection.yaml
+  # M4 should consume M3 final matrices
+  x_train: data/ml/m3/oa_train.csv
+  y_train: data/ml/m3/oa_train_y.csv
+  x_val: data/ml/m3/oa_val.csv
+  y_val: data/ml/m3/oa_val_y.csv
+  x_test: data/ml/m3/oa_test.csv
+  y_test: data/ml/m3/oa_test_y.csv
+  preprocessor: data/ml/m3/preprocessor_bundle.joblib
+
+# Primary graded task (DA2 spine)
+primary_task:
+  name: oa_category_classification
+  problem_type: multiclass_classification
+  target_column: oa_category
+  classes: [fully_open, partially_open, closed]
+
+# Secondary intelligence task
+secondary_task:
+  name: impact_tier_classification
+  problem_type: multiclass_classification
+  target_column: impact_tier
+  classes: [low, medium, high]
+
+training:
+  random_state: 42
+  cv_folds: 5
+  # Exact fractions live in features.yaml; mirrored here for trainers (M4)
+  test_size: 0.15
+  val_size: 0.15
+
+models:
+  # M4 — 14 algorithms (see configs/phase2/models.yaml)
+  - dummy
+  - logistic_regression
+  - gaussian_nb
+  - knn
+  - linear_svc
+  - svc_rbf
+  - decision_tree
+  - random_forest
+  - extra_trees
+  - adaboost
+  - gradient_boosting
+  - xgboost
+  - lightgbm
+  - mlp
+
+metrics:
+  classification:
+    - accuracy
+    - precision_macro
+    - recall_macro
+    - f1_macro
+    - f1_weighted
+    - roc_auc_ovr
+    - average_precision

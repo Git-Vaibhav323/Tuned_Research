@@ -1,0 +1,22 @@
+# Phase 2 / M5 — Hyperparameter tuning
+# Tunes top M4 models; test set used only for final evaluation.
+
+random_state: 42
+cv_folds: 3
+n_iter: 20
+scoring: f1_macro
+# Refit selected champion on train+val before final test
+refit_on_train_val: true
+
+models_to_tune:
+  - adaboost
+  - extra_trees
+  - gradient_boosting
+  - logistic_regression
+  - random_forest
+
+paths:
+  out_dir: evaluation/reports/m5
+  checkpoints: models/checkpoints/m5
+  figures: reports/figures
+  m4_summary: evaluation/reports/m4/m4_training_summary.json

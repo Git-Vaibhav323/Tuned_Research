@@ -1,0 +1,41 @@
+test_id,category,description,status,review_type,detail,latency_ms
+IMPORT,Setup,All RAG modules import successfully,PASS,AUTO,,0.0
+IDX-01,Index,"Index not empty (5796 chunks, 2000 docs)",PASS,AUTO,chunks=5796 docs=2000,0.0
+IDX-02,Index,Index has at least 50 documents,PASS,AUTO,unique_docs=2000,0.0
+RET-01,Retrieval,retrieve('transformer attention mechanism'),PASS,AUTO,top_score=0.63 hits=5 kw=✗,37623.9712999959
+RET-02,Retrieval,retrieve('object detection deep learning YOLO'),PASS,AUTO,top_score=0.75 hits=5 kw=✓,35.02380001009442
+RET-03,Retrieval,retrieve('convolutional neural network image'),PASS,AUTO,top_score=0.53 hits=5 kw=✗,35.08179998607375
+RET-04,Retrieval,retrieve('natural language processing BERT GPT'),PASS,AUTO,top_score=0.59 hits=5 kw=✓,25.648299983004108
+RET-05,Retrieval,retrieve('random forest classification'),PASS,AUTO,top_score=0.65 hits=5 kw=✓,28.65429999656044
+RET-NEG,Retrieval,Nonsense query → low relevance scores,PASS,AUTO,max_score=0.110,35.25429998990148
+RET-EMPTY,Retrieval,Empty query returns no results,PASS,AUTO,empty string,0.0
+META-TITLE,Metadata,Hit has non-empty 'title',PASS,AUTO,value='Understanding of Machine Learn',0.0
+META-YEAR,Metadata,Hit has non-empty 'year',PASS,AUTO,value='2023',0.0
+META-SOURCE,Metadata,Hit has non-empty 'source',PASS,AUTO,value='openalex_csv',0.0
+META-CHUNK_ID,Metadata,Hit has non-empty 'chunk_id',PASS,AUTO,value='97524acf5b3d329927ee',0.0
+META-DOC_ID,Metadata,Hit has non-empty 'doc_id',PASS,AUTO,value='da792c1d1f2f318f',0.0
+CIT-01,Citations,format_citations returns non-empty list,PASS,AUTO,count=3,0.0
+CIT-02,Citations,Citation has label field '[N]',PASS,AUTO,label=[1],0.0
+CIT-03,Citations,Citation title is non-empty,PASS,AUTO,title=Gradient-based learning applied to docum,0.0
+CIT-04,Citations,Citation number starts at 1,PASS,AUTO,number=1,0.0
+CIT-05,Citations,DOI URL format correct when present,PASS,AUTO,doi_url=https://doi.org/10.57702/yobif9bg,0.0
+CIT-06,Citations,Evidence type is 'Full text' or 'Abstract only',PASS,AUTO,evidence_type=Abstract only,0.0
+CIT-MD,Citations,format_citations_markdown returns non-empty string,PASS,AUTO,len=580,0.0
+LOAD-CSV,Loading,load_openalex_csv loads 2000 docs,PASS,AUTO,loaded=2000,256.00379999377765
+LOAD-SCHEMA,Loading,Loaded doc has required fields,PASS,AUTO,"keys=['doc_id', 'title', 'abstract', 'text', 'authors', 'year']",0.0
+CHUNK-01,Chunking,chunk_documents produces chunks for 5 docs,PASS,AUTO,chunks=15,0.0
+CHUNK-FIELDS,Chunking,Chunk has required provenance fields,PASS,AUTO,"keys=['chunk_id', 'doc_id', 'text', 'title', 'authors', 'year']",0.0
+CHUNK-MINLEN,Chunking,All chunks >= MIN_CHUNK_CHARS,PASS,AUTO,min_len=177,0.0
+PDF-EMPTY,Loading,load_pdf_bytes(b'') returns None,PASS,AUTO,empty bytes,0.0
+PDF-GARBAGE,Loading,load_pdf_bytes(garbage) returns None,PASS,AUTO,random bytes,0.0
+CSV-BAD-COLS,Loading,CSV with no title/abstract returns error,PASS,AUTO,docs=0 warnings=1,0.0
+CSV-GOOD,Loading,Valid CSV with title+abstract loads correctly,PASS,AUTO,docs=1,0.0
+CSV-SKIP-EMPTY,Loading,"CSV skips empty rows, loads valid ones",PASS,AUTO,docs=2,0.0
+IDEM-01,Indexing,Re-indexing same docs adds 0 new chunks,PASS,AUTO,added=0,0.0
+IDEM-02,Indexing,Total chunk count unchanged after re-index,PASS,AUTO,before=5796 after=5796,0.0
+PERSIST-01,Persistence,Chunk count matches after collection re-open,PASS,AUTO,before=5796 after=5796,0.0
+OLLAMA-01,Generation,Ollama is reachable and model loaded,PASS,AUTO,model_ready=True,0.0
+OLLAMA-02,Generation,rag_chat() returns tokens and citations,PASS,AUTO,tokens=201 cits=5,6619.025300024077
+OLLAMA-03,Generation,rag_chat() first-token latency < 30s,PASS,AUTO,latency=6619ms,6619.025300024077
+OLLAMA-QUALITY,Generation,Answer quality — does it use evidence and cite sources?,HUMAN-REVIEW,HUMAN-REVIEW,Requires human review of answer content,0.0
+LAT-RET,Latency,Average retrieval latency < 2000ms,PASS,AUTO,avg=41ms q1=33ms q2=50ms,41.32470001059119

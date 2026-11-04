@@ -1,0 +1,60 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# R
+.RData
+.Rhistory
+*.RDataTmp
+
+# Large binary model files
+*.rds
+*.joblib
+*.safetensors
+*.gguf
+*.zip
+*.pdf
+*.parquet
+*.bin
+*.pt
+*.pth
+
+# Generated figures - regenerate from scripts
+reports/figures/
+*.png
+
+# All data outputs - too large for git
+data/ml/
+data/ml_r/
+data/rag_vector_store/
+data/interim/
+data/raw/
+data/processed/
+data/database_r/
+data/raw_papers/
+data/metadata/
+data/instruction_dataset/
+
+# Final dataset - large CSV
+data/final/
+
+# Models
+models/checkpoints/
+models/researchpilot-lora/
+models/adapters/
+models/exports/
+
+# Ollama weights
+ollama/
+
+# ML results - regenerate from scripts
+ml/results/
+evaluation/reports/
+
+# Logs
+*.log
+
+# Env secrets
+.env
