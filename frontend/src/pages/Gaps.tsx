@@ -62,8 +62,10 @@ export default function Gaps() {
         <div className="flex flex-wrap gap-1.5">
           {QUICK.map(q => (
             <button key={q} onClick={() => { setTopic(q); run(q) }}
+                    disabled={loading}
                     className="text-xs px-2.5 py-1.5 bg-gray-800 hover:bg-gray-700
-                               border border-gray-700 rounded-lg text-gray-400 hover:text-gray-200 transition-colors">
+                               border border-gray-700 rounded-lg text-gray-400 hover:text-gray-200
+                               transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
               {q}
             </button>
           ))}

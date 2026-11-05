@@ -15,7 +15,7 @@ export default function IndexMgmt() {
   useEffect(() => { load() }, [])
 
   const build = async () => {
-    setBuilding(true); setResult(null); setMsg('')
+    setBuilding(true); setResult(null); setMsg(''); setConfirm(false)
     const res = await buildIndex(limit)
     setResult(res)
     setBuilding(false)

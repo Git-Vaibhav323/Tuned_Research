@@ -24,9 +24,12 @@ export default function App() {
     const t = setInterval(() => {
       getHealth()
         .then(d => {
-          // If Ollama comes back online after being offline, re-show the banner
+          // Re-show banner if Ollama comes back online after being offline
           setHealth((prev: any) => {
-            if (prev && !prev.ollama && d.ollama) setBannerDismissed(false)
+            if (prev && !prev.ollama && d.ollama) {
+              // Schedule the banner reset outside the updater to avoid side-effects in render
+              setTimeout(() => setBannerDismissed(false), 0)
+            }
             return d
           })
         })
