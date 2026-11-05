@@ -35,13 +35,16 @@ export default function Chat() {
     setInput('')
     setLoading(true)
 
+    // Snapshot history BEFORE adding the new user message
     const history: ChatMessage[] = messages
       .filter(m => !m.streaming)
       .map(m => ({ role: m.role, content: m.content }))
 
-    setMessages(prev => [...prev, { role: 'user', content: q }])
-
-    setMessages(prev => [...prev, { role: 'assistant', content: '', streaming: true }])
+    setMessages(prev => [
+      ...prev,
+      { role: 'user', content: q },
+      { role: 'assistant', content: '', streaming: true },
+    ])
 
     let full = ''
     let cits: Citation[] = []
@@ -56,11 +59,16 @@ export default function Chat() {
           return next
         })
       },
-      c  => { cits = c },
-      ()  => {
+      c => { cits = c },
+      () => {
         setMessages(prev => {
           const next = [...prev]
-          next[next.length - 1] = { role: 'assistant', content: full, citations: cits, streaming: false }
+          next[next.length - 1] = {
+            role: 'assistant',
+            content: full || '*No response received — check Ollama is running.*',
+            citations: cits,
+            streaming: false,
+          }
           return next
         })
         setLoading(false)

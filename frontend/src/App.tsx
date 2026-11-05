@@ -15,9 +15,13 @@ export default function App() {
   const [health, setHealth] = useState<any>(null)
 
   useEffect(() => {
-    getHealth().then(setHealth).catch(() => setHealth(null))
+    getHealth()
+      .then(setHealth)
+      .catch(() => setHealth({ ollama: false, n_chunks: 0, n_docs: 0 }))
     const t = setInterval(() => {
-      getHealth().then(setHealth).catch(() => {})
+      getHealth()
+        .then(setHealth)
+        .catch(() => {})
     }, 15000)
     return () => clearInterval(t)
   }, [])

@@ -26,15 +26,16 @@ export default function Gaps() {
     setLoading(true); setAnswer(''); setCits([]); setHits([])
     let full = ''
 
-    const [, hitsRes] = await Promise.all([
-      streamGaps(t, topK,
-        tok => { full += tok; setAnswer(full) },
-        ci  => { setCits(ci) },
-        ()  => setLoading(false),
-      ),
-      getSources(t, topK),
-    ])
-    setHits(hitsRes.hits)
+    // Run streaming and source fetch independently — don't use Promise.all
+    // because streamGaps returns void (the generator runs async internally)
+    getSources(t, topK).then(res => setHits(res.hits)).catch(() => {})
+
+    await streamGaps(
+      t, topK,
+      tok => { full += tok; setAnswer(full) },
+      ci  => { setCits(ci) },
+      ()  => { setLoading(false) },
+    )
   }
 
   return (
